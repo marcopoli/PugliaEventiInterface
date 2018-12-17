@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Evento -Event Html Template">
+    <meta name="keywords" content="Evento , Event , Html, Template">
+    <meta name="author" content="ColorLib">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title> Evento - Event Html Template</title>
+    <!-- ========== Favicon Ico ========== -->
+    <!--<link rel="icon" href="fav.ico">-->
+    <!-- ========== STYLESHEETS ========== -->
+    <!-- Bootstrap CSS -->
+    <!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">-->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/et-line.css" rel="stylesheet">
+    <link href="assets/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+
+
+</head>
+<body onload="loadEv();">
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
+
+<!--header start here -->
+<header class="header navbar fixed-top navbar-expand-md">
+    <div class="container">
+        <a class="navbar-brand logo" href="#">
+            <img src="assets/img/logo.png" alt="Evento"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-text-align-right"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
+            <ul class=" nav navbar-nav menu">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="profile.html" >Personal Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#" >Eventi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="places.html" >Luoghi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<!--header end here-->
+
+<!--page title section-->
+<section class="inner_cover parallax-window" data-parallax="scroll" data-image-src="assets/img/bg/bg-img.png">
+    <div class="overlay_dark"></div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12">
+                <div class="inner_cover_content">
+                    <h3>
+                       Eventi sul territorio dei prossimi giorni!
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="#">Home</a>  |   </li>
+                <li><span>Events</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--page title section end-->
+
+
+<!--events section -->
+<section class="pt100 pb100">
+    <div class="container">
+
+<div>
+
+  <h5>Filtra i nostri eventi</h5>
+<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->Città in cui cercare:&nbsp;&nbsp;<input type="text" id="comune" width="50px" nome ="comune" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Range:&nbsp;&nbsp;<span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="slider-value">50</span>&nbsp;km<br><br>
+<div >
+  <input type="radio" name="date" value="7d" checked> 7 Giorni &nbsp;&nbsp;
+  <input type="radio" name="date" value="1m"> 1 Mese &nbsp;&nbsp;
+  <input type="radio" name="date" value="6m"> 6 Mesi &nbsp;&nbsp;
+</div>
+
+  <a name="top" id="top">
+<br><br><a href="#" class=" btn btn-primary btn-rounded" >
+    Cerca
+</a>
+</div>
+
+<br><br><br><h1>Lista Eventi </h1>
+
+<div id ="eventiContainer" name ="eventiContainer">
+</div>
+   <ul id="pagination-demo" class="pagination-sm"></ul>
+</div>
+</section>
+<!--event section end -->
+
+
+<!--footer start -->
+<footer>
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-4 col-12">
+                <div class="footer_box">
+                    <div class="footer_header">
+                        <div class="footer_logo">
+                            <img src="assets/img/logo.png" alt="evento">
+                        </div>
+                    </div>
+                    <div class="footer_box_body">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In rhoncus massa nec gravida tempus. Integer iaculis in aazzzCurabitur a pulvinar nunc. Maecenas laoreet finibus lectus, at volutpat ligula euismod.
+                        </p>
+                        <ul class="footer_social">
+                            <li>
+                                <a href="#"><i class="ion-social-pinterest"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="ion-social-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="ion-social-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="ion-social-dribbble"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="ion-social-instagram"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="footer_box">
+                    <div class="footer_header">
+                        <h4 class="footer_title">
+                            instagram
+                        </h4>
+                    </div>
+                    <div class="footer_box_body">
+                        <ul class="instagram_list">
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c1.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c2.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c3.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c3.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c2.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c1.png" alt="instagram">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="footer_box">
+                    <div class="footer_header">
+                        <h4 class="footer_title">
+                            subscribe to our newsletter
+                        </h4>
+                    </div>
+                    <div class="footer_box_body">
+                        <div class="newsletter_form">
+                            <input type="email" class="form-control" placeholder="E-Mail here">
+                            <button class="btn btn-rounded btn-block btn-primary">SUBSCRIBE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="copyright_footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-12">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <ul class="footer_menu">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Speakers</a>
+                    </li>
+                    <li>
+                        <a href="#">Events</a>
+                    </li>
+                    <li>
+                        <a href="#">News</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer end -->
+
+<!-- jquery -->
+<script src="assets/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/js/popper.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/waypoints.min.js"></script>
+<!--slick carousel -->
+<script src="assets/js/owl.carousel.min.js"></script>
+<!--parallax -->
+<script src="assets/js/parallax.min.js"></script>
+<!--Counter up -->
+<script src="assets/js/jquery.counterup.min.js"></script>
+<!--Counter down -->
+<script src="assets/js/jquery.countdown.min.js"></script>
+<!-- WOW JS -->
+<script src="assets/js/wow.min.js"></script>
+<!-- Custom js -->
+<script src="assets/js/main.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+<script>
+var numev = 1;
+
+$.ajax({
+    type: 'get',
+    url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/countEvents',
+    contentType: "application/json",
+    success: function (response) {
+        var obj = response[0];
+        var numP = parseInt(obj.num);
+
+        numev = Math.floor((numP / 10));
+
+        if(numP%10 != 0){
+            numev = Math.floor((numP / 10)+1);
+        }
+          pagin();
+      },
+
+    error: function(e) {
+      var je = JSON.parse(e.responseText);
+       alert("ko");
+    }
+});
+</script>
+
+<script src="http://esimakin.github.io/twbs-pagination/js/jquery.twbsPagination.js"></script>
+<script>
+$("#slider").slider(
+{
+            value:50,
+            min: 0,
+            max: 200,
+            step: 10,
+            slide: function( event, ui ) {
+                $( "#slider-value" ).html( ui.value );
+            }
+}
+);
+
+	function loadEv( ) {
+    $.ajax({
+        type: 'get',
+        url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/0',
+        contentType: "application/json",
+        success: function (response) {
+          $("#eventiContainer").html("");
+          for (var i = 0; i < 10; i++){
+            var obj = response[i];
+            var dat = new Date(obj.data_da);
+            var dat_a = new Date(obj.data_a);
+            var da = dat.getDate()  + "/" + (dat.getMonth()+1) + "/" + dat.getFullYear();
+            var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
+            $("#eventiContainer").html($("#eventiContainer").html()+"<a name ='anchor_"+i+"' id ='anchor_"+i+"'/> <div class='event_box'><div class='event_info'><div class='event_title' style='font-size:16px'>"+obj.titolo+"</div> <div class='speakers'><strong>Luogo: </strong><span> "+obj.comune+" --- <b>"+obj.posto_nome+"</b></span></div>  <div class='event_date'> <span style='color:black'>Dal</span>: "+da+" <span style='color:black'>al</span> "+a+"  </div> <div class='sliderb' style='border:1px solid;padding:10px' id='event"+i+"'>"+obj.descrizione+"</div><div class='slider_menu' id='slider_menu_"+i+"'></div></div></div>");
+
+
+          }
+          setMore();
+        },
+        error: function(e) {
+          var je = JSON.parse(e.responseText);
+           alert("ko");
+        }
+    });
+
+
+};
+
+function changePageEv(page) {
+  $.ajax({
+      type: 'get',
+      url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/'+((page*10)-10),
+      contentType: "application/json",
+      success: function (response) {
+          $("#eventiContainer").html("");
+        for (var i = 0; i < 10; i++){
+          var obj = response[i];
+          var dat = new Date(obj.data_da);
+          var dat_a = new Date(obj.data_a);
+          var da = dat.getDate()  + "/" + (dat.getMonth()+1) + "/" + dat.getFullYear();
+          var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
+
+          $("#eventiContainer").html($("#eventiContainer").html()+"<a name ='anchor_"+i+"' id ='anchor_"+i+"'/> <div class='event_box'><div class='event_info'><div class='event_title' style='font-size:16px'>"+obj.titolo+"</div> <div class='speakers'><strong>Luogo: </strong><span> "+obj.comune+" --- <b>"+obj.posto_nome+"</b></span></div>  <div class='event_date'> <span style='color:black'>Dal</span>: "+da+" <span style='color:black'>al</span> "+a+"  </div><div class='sliderb' style='border:1px solid;padding:10px' id='event"+i+"'>"+obj.descrizione+"</div><div class='slider_menu' id='slider_menu_"+i+"'></div></div></div>");
+
+
+        }
+        setMore();
+      },
+      error: function(e) {
+        var je = JSON.parse(e.responseText);
+         alert("ko");
+      }
+  });
+
+
+};
+
+var sliderHeight = "100px";
+
+function setMore(){
+  var i = 0;
+    $('.sliderb').each(function () {
+                var current = $(this);
+                current.attr("box_h", current.height()+50);
+                current.css("overflow", "hidden");
+                current.css("height", sliderHeight);
+                $("#slider_menu_"+i).html('<span>Read More</span>');
+                $("#slider_menu_"+i+" span").attr("onclick","openSlider("+i+");");
+                  i = i+ 1;
+            });
+            var url = location.href;               //Save down the URL without hash.
+            location.href = "#top";                 //Go to the target element.
+            history.replaceState(null,null,url);
+
+
+}
+
+function openSlider(i){
+    var open_height = $("#event"+i).attr("box_h") + "px";
+
+    $("#event"+i).animate({"height": open_height}, {duration: "slow" });
+    $("#slider_menu_"+i).html('<span>Close</span>');
+    $("#slider_menu_"+i+" span").attr("onclick","closeSlider("+i+");");
+}
+
+function closeSlider( i){
+    $("#event"+i).animate({"height": sliderHeight}, {duration: "slow" });
+    $("#slider_menu_"+i).html('<span>Read More</span>');
+    $("#slider_menu_"+i+" span").attr("onclick","openSlider("+i+");");
+    var url = location.href;               //Save down the URL without hash.
+    location.href = "#anchor_"+i;                 //Go to the target element.
+    history.replaceState(null,null,url);
+    window.scrollTo(window.scrollX, window.scrollY - 100);
+}
+
+function pagin(){
+$('#pagination-demo').twbsPagination({
+        totalPages: numev,
+        visiblePages: 7,
+        onPageClick: function (event, page) {
+            $('#page-content').text('Page ' + page);
+            changePageEv(page);
+
+
+        }
+    });
+  }
+
+  $(function() {
+             $( "#comune" ).autocomplete({
+                 source: function( request, response ) {
+                     $.ajax({
+                       type: 'get',
+                       url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
+                       contentType: "application/json",
+                         success: function( data ) {
+                             response( data );
+                         }
+
+                     });
+                 },
+             });
+
+             $( "#nome" ).autocomplete({
+                                 source: function( request, response ) {
+                                     $.ajax({
+                                       type: 'get',
+                                       url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
+                                       contentType: "application/json",
+                                         success: function( data ) {
+                                             response( data );
+                                         }
+
+                                     });
+                                 },
+                             });
+
+
+         });
+
+
+</script>
+
+</body>
+</html>

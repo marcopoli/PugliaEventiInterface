@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+  <script>
+  function on() {
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("overlay").style.zIndex = "1031";
+  }
+
+  function off() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("overlay").style.zIndex = "1";
+  }
+
+  function onIscr() {
+      document.getElementById("overlayIscr").style.display = "block";
+      document.getElementById("overlayIscr").style.zIndex = "1031";
+  }
+
+  function offIscr() {
+      document.getElementById("overlayIscr").style.display = "none";
+      document.getElementById("overlayIscr").style.zIndex = "1";
+  }
+  </script>
+
+  <style>
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+#overlayIscr {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#textIscr{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+</style>
+
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Evento -Event Html Template">
+    <meta name="keywords" content="Evento , Event , Html, Template">
+    <meta name="author" content="ColorLib">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title> Evento - Event Html Template</title>
+    <!-- ========== Favicon Ico ========== -->
+    <!--<link rel="icon" href="fav.ico">-->
+    <!-- ========== STYLESHEETS ========== -->
+    <!-- Bootstrap CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/et-line.css" rel="stylesheet">
+    <link href="assets/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
+
+<!-- login -->
+<div id="overlay">
+
+  <div id="text" style="background-color:white; height:70%; width:30%;color:black; padding-left:100px;height:90%;">
+<div class="ion-close-circled" onclick="off();" style="font-size:16px;z-index:999;padding-top:25px!important;margin-left:-65px!important;"></div>
+<footer style ="background-color:white!important;color:black!important;margin:0!important">
+    <div class="footer_box" style ="margin:0px!important">
+    <h4 class="footer_title" style="color:black!important;">Login</h4>
+    <tr><td colspan="2"><br><br><div id ="loginRes" style = "color:red!important;font-size:14px;"></div></td></tr>
+    <form id="login" name = "login" method ='post' enctype='multipart/form-data'>
+      <table style="font-size: 14px;">
+        <tr>
+            <td>Email:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><input name ="email" id ="email" width="80px"/>
+        </tr>
+        <tr>
+          <td>Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td><input name ="password" id ="password" type="password" width="80px"/>
+        </tr>
+        <tr><td colspan="2"><br><br><input class=" btn btn-primary btn-rounded" type="submit" name="submit" id="submit" value="Entra"/></td></tr>
+        <tr><td colspan="2"><div onclick="off(); onIscr();" style="color:blue!important;font-size:12px !important">Non sei ancora iscritto? Iscriviti ora!</div></td></tr>
+      </table>
+
+
+    </form>
+  </div>
+</footer>
+
+  </div>
+</div>
+
+<!-- Div Iscrizione -->
+<div id="overlayIscr">
+
+  <div id="text" style="background-color:white; height:70%; width:30%;color:black; padding-left:100px;height:90%;">
+    <div class="ion-close-circled" onclick="offIscr();" style="font-size:16px;z-index:999;padding-top:25px!important;margin-left:-65px!important;"></div>
+    <footer style ="background-color:white!important;color:black!important;margin:0!important">
+        <div class="footer_box" style ="margin:0px!important">
+    <h4 class="footer_title" style="color:black!important;">Iscrizione</h4>
+    <tr><td colspan="2"><br><br><div id ="signupRes" style = "color:red!important;font-size:14px;"></div></td></tr>
+    <form id="signup" name = "signup" method ='post' enctype='multipart/form-data'>
+      <table style="font-size: 14px;">
+        <tr>
+            <td>Username:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><input name ="username" id ="usernameIscr" width="80px"/>
+        </tr>
+        <tr>
+            <td>Email:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><input name ="email" id ="emailIscr" width="80px"/>
+        </tr>
+        <tr>
+          <td>Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td><input name ="password" id ="passwordIscr" type="password" width="80px"/>
+        </tr>
+        <tr>
+          <td>Re-Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td><input name ="password2" id ="passwordIscr2" type="password" width="80px"/>
+        </tr>
+        <tr><td colspan="2"><br><br><input class=" btn btn-primary btn-rounded" type="submit" name="submit" id="submit" value="Iscriviti"/></td></tr>
+        <tr><td colspan="2"><div onclick="offIscr(); on();" style="color:blue!important;font-size:12px!important">Hai già un account?Entra!</div></td></tr>
+      </table>
+
+
+    </form>
+  </div>
+</footer>
+
+  </div>
+</div>
+
+
+<!--header start here -->
+<header class="header navbar fixed-top navbar-expand-md">
+    <div class="container">
+        <a class="navbar-brand logo" href="#">
+            <img src="assets/img/logo.png" alt="Evento"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-text-align-right"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
+            <ul class=" nav navbar-nav menu">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#" onclick="on()">Entra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#" onclick="onIscr()">Iscriviti</a>
+                </li>
+                <li class="search_btn">
+                    <a  href="#info">
+                       <i class="ion-information-circled"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<!--header end here-->
+
+
+
+<!--cover section slider -->
+<section id="home" class="home-cover">
+    <div class="cover_slider owl-carousel owl-theme">
+        <div class="cover_item" style="background: url('assets/img/bg/slider.png');">
+             <div class="slider_content">
+                <div class="slider-content-inner">
+                    <div class="container">
+                        <div class="slider-content-center">
+                          <h3 class="cover-title">
+                              Prepare yourself for living Apulia
+                          </h3>
+                          <strong class="cover-xl-text" style ="font-size:1w;">feeling at home!</strong>
+                          <p class="cover-date">
+                              Eventi, attività e luoghi in cui andare con gli amici! <br>
+                              Tutto incentrato sui tuoi interessi
+                          </p>
+                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                              Entra!
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cover_item" style="background: url('assets/img/bg/slider.png');">
+            <div class="slider_content">
+                <div class="slider-content-inner">
+                    <div class="container">
+                        <div class="slider-content-left">
+                          <h3 class="cover-title">
+                              Prepare yourself for living Apulia
+                          </h3>
+                          <strong class="cover-xl-text" style ="font-size:1w;">feeling at home!</strong>
+                          <p class="cover-date">
+                              Eventi, attività e luoghi in cui andare con gli amici! <br>
+                              Tutto incentrato sui tuoi interessi
+                          </p>
+                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                              Entra!
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cover_item" style="background: url('assets/img/bg/slider.png');">
+            <div class="slider_content">
+                <div class="slider-content-inner">
+                    <div class="container">
+                        <div class="slider-content-center">
+                          <h3 class="cover-title">
+                              Prepare yourself for living Apulia
+                          </h3>
+                          <strong class="cover-xl-text" style ="font-size:1w;">feeling at home!</strong>
+                          <p class="cover-date">
+                              Eventi, attività e luoghi in cui andare con gli amici! <br>
+                              Tutto incentrato sui tuoi interessi
+                          </p>
+                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                              Entra!
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cover_nav">
+        <ul class="cover_dots">
+            <li class="active" data="0"><span>1</span></li>
+            <li  data="1"><span>2</span></li>
+            <li  data="2"><span>3</span></li>
+        </ul>
+    </div>
+</section>
+<!--cover section slider end -->
+
+<!--about the event -->
+<section class="pt100 pb100">
+    <div class="container">
+        <div class="section_title">
+            <h3 class="title">
+                About the project
+            </h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <p>
+                    Il progetto mira a rispondere alla necessità di sapere cosa si può fare sul territorio pugliese in manira personalizzata ed efficace!
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p>
+                    Chiunque si può sentire a casa in puglia partecipando ad eventi sul territorio a cui partecipano le persone del luogo! Noi capiamo cosa ti piace fare e tu scegli dove andare.
+                </p>
+            </div>
+        </div>
+
+        <!--event features-->
+        <div class="row justify-content-center mt30">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="icon_box_one">
+                    <i class="lnr lnr-mic"></i>
+                    <div class="content">
+                        <h4>Eventi e tanto altro</h4>
+                        <p>
+                           Ti proponiamo una serie di eventi in luoghi in cui bere e mangiare da solo o in compagnia in base a come tu preferisci!
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="icon_box_one">
+                    <i class="lnr lnr-rocket"></i>
+                    <div class="content">
+                        <h4>Personalizzazione</h4>
+                        <p>
+                            Capiamo cosa ti interessa dalle interazioni con i social network e ti suggeriamo solo ciò che ti piace!<br><br><br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="icon_box_one">
+                    <i class="lnr lnr-bullhorn"></i>
+                    <div class="content">
+                        <h4>Varietà dei contenuti</h4>
+                        <p>
+                          Ti suggeriamo una grande varietà di eventi, da festival locali ad attività sociali e culturali! Scegli tu cosa vuoi fare nei prossimi giorni!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="icon_box_one">
+                    <i class="lnr lnr-clock"></i>
+                    <div class="content">
+                        <h4>Aggiornati e recenti</h4>
+                        <p>
+                          Tutti gli eventi proposti sono aggiornati e reperiti dal web quotidianamente. Poichè sappiamo che il tuto tempo conta!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--event features end-->
+    </div>
+</section>
+<!--about the event end -->
+
+<!--footer start -->
+<footer>
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-4 col-12">
+                <div class="footer_box">
+                  <h4 class="footer_title">
+                     About us
+                  </h4>
+                    <div class="footer_header">
+                        <div style="">
+                            <img src="assets/img/logo.png" alt="evento">
+                        </div>
+                    </div>
+                    <div class="footer_box_body">
+                      <div class="newsletter_form">
+                          Send an email to:<br>
+                          <a href="mailto:marco.polignano@uniba.it">marco.polignano@uniba.it</a>
+                      </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="footer_box">
+                    <div class="footer_header">
+                        <h4 class="footer_title">
+                            Eventi
+                        </h4>
+                    </div>
+                    <div class="footer_box_body">
+                        <ul class="instagram_list">
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c1.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c2.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/c3.png" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/cinema.jpg" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/bar.jpg" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="assets/img/cleander/museo.jpg" alt="instagram">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="footer_box">
+                    <div class="footer_header">
+                        <h4 class="footer_title">
+                           Disclamer
+                        </h4>
+                    </div>
+                    <div class="footer_box_body">
+                      <p>
+                        Il progetto ha scopo di ricerca e non commerciale. Tutti i dati raccolti sono stati reperiti da fonti gratuite sul web. I dati degli utnti saranno trattati con il rispetto della più recente norma della privacy, non divulgati ed elaborati automaticamnte da un algoritmo che non mantiene traccia delle vostre identità. Tutti i dati forniti sono solamente utilizzati a fini di personalizzazione dei contenuti proposti e a fini statistici.
+                      </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="copyright_footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-12">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <ul class="footer_menu">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Entra</a>
+                    </li>
+                    <li>
+                        <a href="#">Iscriviti</a>
+                    </li>
+                    <li>
+                        <a href="#">Info</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer end -->
+
+<!-- jquery -->
+<script src="assets/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/js/popper.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/waypoints.min.js"></script>
+<!--slick carousel -->
+<script src="assets/js/owl.carousel.min.js"></script>
+<!--parallax -->
+<script src="assets/js/parallax.min.js"></script>
+<!--Counter up -->
+<script src="assets/js/jquery.counterup.min.js"></script>
+<!--Counter down -->
+<script src="assets/js/jquery.countdown.min.js"></script>
+<!-- WOW JS -->
+<script src="assets/js/wow.min.js"></script>
+<!-- Custom js -->
+<script src="assets/js/main.js"></script>
+
+<script type='text/javascript'>
+	function toJSONString( form ) {
+		var obj = {};
+		var elements = form.querySelectorAll( "input, select, textarea" );
+		for( var i = 0; i < elements.length; ++i ) {
+			var element = elements[i];
+			var name = element.name;
+			var value = element.value;
+
+			if( name ) {
+				obj[ name ] = value;
+			}
+		}
+
+		return JSON.stringify( obj );
+	}
+  function setcookie(name, value, days)
+  {
+    if (days)
+    {
+      var date = new Date();
+      date.setTime(date.getTime()+days*24*60*60*1000); // ) removed
+      var expires = "; expires=" + date.toGMTString(); // + added
+    }
+    else
+      var expires = "";
+    document.cookie = name+"=" + value+expires + ";path=/"; // + and " added
+  }
+
+$("#login").submit(function(e) {
+  var json = toJSONString( this );
+                e.preventDefault();
+                var email = document.getElementById('email').value;
+                $.ajax({
+                    type: 'post',
+                    url: 'http://90.147.102.243:5000/auth/login',
+                    data: json,
+                    contentType: "application/json",
+                    success: function (response) {
+                    //  var je = JSON.parse(response.responseText);
+                      $("#loginRes").text("Success!");
+                      sessionStorage.setItem('tokenPugliaEvent', response.token);
+                      sessionStorage.setItem('userPugliaEvent', response.username);
+                      sessionStorage.setItem('emailPugliaEvent', email);
+                    },
+                    error: function(e) {
+                      var je = JSON.parse(e.responseText);
+                       $("#loginRes").text(je.message);
+                    }
+                });
+        });
+
+        $("#signup").submit(function(e) {
+          e.preventDefault();
+          var username = document.getElementById('usernameIscr').value;
+          var email = document.getElementById('emailIscr').value;
+          var password = document.getElementById('passwordIscr').value;
+          var password2 = document.getElementById('passwordIscr2').value;
+
+
+          if (password == password2 && username != "" && email !=""){
+                        var json = toJSONString( this );
+
+                        $.ajax({
+                            type: 'post',
+                            url: 'http://90.147.102.243:5000/auth/signup',
+                            data: json,
+                            contentType: "application/json",
+                            success: function (response) {
+                            //  var je = JSON.parse(response.responseText);
+                              $("#signupRes").text("Success!");
+                              sessionStorage.setItem('tokenPugliaEvent', response.token);
+                              sessionStorage.setItem('userPugliaEvent', username);
+                              sessionStorage.setItem('emailPugliaEvent', email);
+                            },
+                            error: function(e) {
+                              var je = JSON.parse(e.responseText);
+                               $("#signupRes").text(je.message);
+                            }
+                        });
+                      }else{
+                        $("#signupRes").text("Errore di iscrizione ricontrolla i dati");
+                      }
+
+                });
+
+  </script>
+
+</body>
+</html>

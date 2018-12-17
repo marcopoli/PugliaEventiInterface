@@ -1,0 +1,107 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.sql.ResultSet"%>    
+<%@ page import="myPack.Database"%>
+ 
+ <% request.setCharacterEncoding("UTF-8");
+response.setCharacterEncoding("UTF-8");
+%>
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Review Checker</title>
+</head>
+<body>
+<%
+String idU = "";
+int test = 0;
+try{
+ idU = (String)request.getAttribute("mess");
+ }catch(Exception e){}
+ 
+ try{
+ test = (Integer)request.getAttribute("test");
+ }catch(Exception e){}
+
+if(idU != null) {
+ 
+ResultSet rs = Database.getData(idU, test);
+String id ="";
+String orContent ="";
+
+boolean pulp = false;
+boolean puln = false;
+boolean comp = false;
+boolean comn = false;
+boolean servp = false;
+boolean servn = false;
+boolean staffp = false;
+boolean staffn = false;
+boolean qualp = false;
+boolean qualn = false;
+boolean wifip = false;
+boolean wifin = false;
+boolean posp = false;
+boolean posn = false;
+int i = 0;
+String u_sid ="";
+
+while (rs.next()){
+	if(i == 0){
+		id = rs.getString("id_review")+":"+rs.getString("id_sentence");
+		orContent = rs.getString("sentence");
+		u_sid = rs.getString("u_sid");
+	}
+
+	i++;
+}
+
+
+ %>
+
+<form id="1" method="get" target ="">
+<% if(test == 0){ %>
+Visulizzazione attuale personal set.<br>    
+<!--  <input type="submit" value=" Passa al test set " style="width: 241px; height: 23px; background-color: lightgrey;" onclick="form.action='http://90.147.170.25:8080/Absita/Testset';"><br>----------------------------------------------------------------------------------------------------------------------------------------------------------------------<br>-->
+<%} %>
+<% if(test == 1){ %>
+<!--Visulizzazione attuale test set:  
+ <input type="submit" value=" Passa al personal set " style="width: 241px; height: 24px; background-color: lightgrey;" onclick="form.action='http://90.147.170.25:8080/Absita/Personal';"><br>-----------------------------------------------------------------------------------------------------------------------------------------------------------------------<br>-->
+<%} %>
+<br>n° frasi annotate: 
+<%
+int nn = Database.getNumChecked(idU, test);
+int ttt = Database.getNumTot(idU, test);
+ if(test == 0){ %>
+<%=nn %>/<%=ttt %><% }else{ %>
+<%=nn %>/<%=ttt %>
+<%} %>
+
+<br><br>Id: <input readonly value="<%=id %>" style="width: 849px; " name ="id">
+<br><br><span style="font-size:20px"><b>Sentence:</b></span></b><br>
+
+<input name="original_text" value="<%=orContent%>" style="display:none;"/>
+<input name="u_sid" value="<%=u_sid%>" style="display:none;"/>
+<input name="idU" value="<%=idU%>" style="display:none;"/>
+<input name="test" value="<%=test%>" style="display:none;"/>
+<big></big><textarea name="sentence" contenteditable="true" rows="10" cols="100" style="width: 871px; height: 103px; font-size:16px; color: darkblue;"  editable="true"> <%out.print(new String(orContent.getBytes(),"UTF-8"));  %> </textarea></big><br><br><br> 	
+<b><big>1) Verifica della struttura della frase</big></b><br>Per suddividere la frase usare inserire la sequenza speciale <b>###</b>  nel box sopra e premere su &quot;Split&quot;</br>
+Per eliminare la frase dal dataset premere "Discard"<br><br>
+   <input type="submit" value=" Discard " style="width: 112px; height: 39px; background-color: lightsalmon" onclick="form.action='http://90.147.170.25:8080/Absita/Discard'"> <input type="submit" value=" Split " style="width: 113px; height: 39px; background-color: lightskyblue;" onclick="form.action='http://90.147.170.25:8080/Absita/Split';">  <br><br><br><b><big>2) Check del topic</big></b><br>Inserisci le spunte per i topic che credi siano coinvolti nella frase in maniera positiva + o negavita -<br><br><table border="1px black" style="width: 878px; border-collapse: collapse; text-align: center;"><big>
+</big><tr><th colspan="2" style="width: 58px; border-right:3px solid;"><big>Pulizia</big></th><th colspan="2" style="width: 59px; border-right:3px solid;"><big>Comfort</big></th><th colspan="2" style="width: 58px; border-right:3px solid;"><big>Servizi</big></th><th colspan="2" style="width: 58px; border-right:3px solid;"><big>Staff</big></th><th colspan="2" style="border-right:3px solid;"><big>Qualit/Prez</big></th><th colspan="2" style="width: 60px; border-right:3px solid;"><big>WiFi</big></th><th colspan="2" style="border-right:3px solid;""><big>Posizione</big></th><th colspan="3"><big>Altro</big></tr><big>
+</big><tr><td><big><label for="pulp">+</label></big><big><br></big><big><input type="checkbox" id ="pulp" <%if(pulp)out.print("checked"); %> name = "topics" value="pulp"></big></td><td style="border-right:3px solid;"><big><label for="puln">-</label></big><big><br></big><big><input type="checkbox" <%if(puln)out.print("checked"); %> name = "topics" value="puln" id ="puln"></big></td><td><big><label for="comp">+</label></big><big><br></big><big><input type="checkbox" <%if(comp)out.print("checked"); %> name = "topics" value="comp" id ="comp"></big></td><td style="border-right:3px solid;"><big><label for="comn">+</label></big><big><br></big><big><input type="checkbox" <%if(comn)out.print("comn"); %> name = "topics" value="comn" id="comn"></big></td><td><big><label for="servp">+</label></big><big><br></big><big><input type="checkbox" <%if(servp)out.print("checked"); %> name = "topics" value="servp" id="servp"></big></td><td style="border-right:3px solid;"><big><label for="servn">-</label></big><big><br></big><big><input type="checkbox" <%if(servn)out.print("checked"); %> name = "topics" value="servn" id="servn"></big></td><td><big><label for="staffp">+</label></big><big><br></big><big><input type="checkbox" <%if(staffp)out.print("checked"); %> name = "topics" value="staffp" id="staffp"></big></td><td style="border-right:3px solid;"><big><label for="staffn">-</label></big><big><br></big><big><input type="checkbox" <%if(staffn)out.print("checked"); %> name = "topics" value="staffn" id="staffn"></big></td><td><big><label for="qualp">+</label></big><big><br></big><big><input type="checkbox" <%if(qualp)out.print("checked"); %> name = "topics" value="qualp" id ="qualp"></big></td><td style="border-right:3px solid;"><big><label for="qualn">-</label></big><big><br></big><big><input type="checkbox" <%if(qualn)out.print("checked"); %> name = "topics"  value="qualn" id ="qualn"></big></td><td><big><label for="wifip">+</label></big><big><br></big><big><input type="checkbox" <%if(wifip)out.print("checked"); %> name = "topics" value="wifip" id="wifip"></big></td><td style="border-right:3px solid;"><big><label for="wifin">-</label></big><big><br></big><big><input type="checkbox" <%if(wifin)out.print("checked"); %> name = "topics"  value="wifin" id="wifin"></big></td><td><big><label for="posp">+</label></big><big><br></big><big><input type="checkbox" <%if(posp)out.print("checked"); %> name = "topics"  value="posp" id="posp"></big></td><td style="border-right:3px solid;"><big><label for="posn">-</label></big><big><br></big><big><input type="checkbox" <%if(posn)out.print("checked"); %> name = "topics"  value="posn" id="posn"></big></td>
+<td><big><label for="altrop">+</label></big><big><br></big><big><input type="checkbox" name = "topics"  value="altrop" id="altrop"></big></td><td ><big><label for="altron">-</label></big><big><br></big><big><input type="checkbox" name = "topics"  value="altron" id="altron"></big></td><td ><big><label for="altro">#</label></big><big><br></big><big><input type="checkbox" name = "topics"  value="altro" id="altro"></big></td>
+
+</tr><big>
+</big></table><big>
+</big><br><br><input type="submit" value=" >Close< " style="width: 113px; height: 39px; background-color: lightcoral;" onclick="form.action='http://90.147.170.25:8080/Absita/Close';">   <input type="submit" value=" Confirm " style="width: 112px; height: 39px; background-color: lightgreen;" onclick="form.action='http://90.147.170.25:8080/Absita/Comfirm'"></form><big>
+
+
+
+</big></body><big>
+</big>
+<%}else{
+out.print("<a href='http://90.147.170.25:8080/Absita/jsp/index.jsp'><span style='color:red;'> Effettua prima il login!</span></a>");
+}%>
+</html>
