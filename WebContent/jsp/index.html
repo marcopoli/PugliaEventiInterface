@@ -540,6 +540,10 @@ $("#login").submit(function(e) {
                     success: function (response) {
                     //  var je = JSON.parse(response.responseText);
                       $("#loginRes").text("Success!");
+                      //chiude la finestra di login e redirect a pagina profilo
+                      off();
+                      document.location.href = "profile.html";
+                      //---------------------
                       sessionStorage.setItem('tokenPugliaEvent', response.token);
                       sessionStorage.setItem('userPugliaEvent', response.username);
                       sessionStorage.setItem('emailPugliaEvent', email);
