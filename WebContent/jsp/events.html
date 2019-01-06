@@ -27,6 +27,72 @@
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    
+    
+  <script>  
+    function myrror_getUser() {
+    	var obj={};
+    	obj["username"] = sessionStorage.getItem('userPugliaEvent');
+    	var json = JSON.stringify(obj)
+		$.ajax({
+			 type: 'post',
+		     url: 'http://90.147.102.243:5000/api/user',
+		     contentType: "application/json",
+		     data: json,
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		       alert("success " + response.demographics.name.value + " - " + response.demographics.location[0].value);
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure");
+		     }
+		});
+	}
+    
+    function myrror_getInterests(){
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/interests/wordcloud?db=gperniola&from=2019-01-01T11:06:12.506Z&to=2019-01-06T11:06:12.506Z&
+		     url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		       alert("success getInterests ");
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getInterests");
+		     }
+		});
+    	
+    }
+    
+    function myrror_getMap(){
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/map?db=gperniola&from=2019-01-01T13:40:39.952Z&to=2019-01-06T13:40:39.952Z&
+		     url: 'http://90.147.102.243:5000/api/stats/map',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		       alert("success getMap ");
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
+</script>
+
 
 
 
@@ -106,12 +172,16 @@
 </div>
 
   <a name="top" id="top">
-<br><br><a href="#" class=" btn btn-primary btn-rounded" >
+<br><br><a href="#" class=" btn btn-primary btn-rounded" onclick="myrror_getUser(); myrror_getInterests(); myrror_getMap();">
     Cerca
 </a>
 </div>
 
-<br><br><br><h1>Lista Eventi </h1>
+<br><br><br>
+<div>
+	<div style="display: inline-block; padding-right:15px;"><h1>Lista Eventi</h1></div>
+	<div style="display: inline-block;"><h3 id="counterEvents"></h3></div>
+</div>
 
 <div id ="eventiContainer" name ="eventiContainer">
 </div>
@@ -285,7 +355,10 @@ $.ajax({
     success: function (response) {
         var obj = response[0];
         var numP = parseInt(obj.num);
-
+		
+        //mostra numero di eventi trovati
+        showNumFoundEvents(numP);
+        
         numev = Math.floor((numP / 10));
 
         if(numP%10 != 0){
@@ -301,7 +374,17 @@ $.ajax({
 });
 </script>
 
+<script>
+function showNumFoundEvents(n){
+	document.getElementById("counterEvents").innerHTML= " ("+ n + " trovati)";
+}
+
+</script>
+
+
 <!--  <script src="http://esimakin.github.io/twbs-pagination/js/jquery.twbsPagination.js"></script> -->
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
 <script>
 $("#slider").slider(
