@@ -27,6 +27,140 @@
     <link href="assets/css/main.css" rel="stylesheet">
     
     
+        
+  <script>  
+    function myrror_getUser() {
+    	var x = window.open("", "newWindow", "width=1000,height=800");
+    	var obj={};
+    	obj["username"] = sessionStorage.getItem('userPugliaEvent');
+    	var json = JSON.stringify(obj)
+		$.ajax({
+			 type: 'post',
+		     url: 'http://90.147.102.243:5000/api/user',
+		     contentType: "application/json",
+		     data: json,
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		       //alert("success " + response.demographics.name.value + " - " + response.demographics.location[0].value);
+		       
+		       var myjson = JSON.stringify(response, null, 2);
+		       
+		       x.document.open();
+		       x.document.write('<html><body><h2>PROFILE AND DEMOGRAPHIC DATA</h2><pre>' + myjson + '</pre></body></html>');
+		       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure");
+		     }
+		});
+	}
+    
+    function myrror_getInterests(){
+    	var x = window.open("", "newWindow", "width=1000,height=800");
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/interests/wordcloud?db=gperniola&from=2019-01-01T11:06:12.506Z&to=2019-01-06T11:06:12.506Z&
+		     url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>INTERESTS DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getInterests");
+		     }
+		});
+    	
+    }
+    
+    function myrror_getMap(){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/map?db=gperniola&from=2019-01-01T13:40:39.952Z&to=2019-01-06T13:40:39.952Z&
+		     url: 'http://90.147.102.243:5000/api/stats/map',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>MAP DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
+    
+    function myrror_getSentiment(){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/sentiment/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
+		     url: 'http://90.147.102.243:5000/api/stats/sentiment/timeline',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>SENTIMENT DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
+    
+    function myrror_getEmotion(){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+    	$.ajax({
+			 type: 'get',
+			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
+		     url: 'http://90.147.102.243:5000/api/stats/emotion/timeline',
+		     contentType: "application/json",
+		     data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		   			},
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>EMOTION DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
+        
+</script>
+    
+    
+    
+    
     <script>
     function linkAccountClick(){
     	console.log("click!");	
@@ -110,11 +244,19 @@
                   <h5 ><ul id ="checkMyrror"></ul></h5>
                   <p _ngcontent-c18="">Collega i tuoi account social per poter usufruire dei nostri contenuti personalizzati!<br> L'account Facebook per noi è indispensbile per capire i tuoi interessi, in aggiunta puoi anche collegare  Twetter e LinkedIn.</p>
                   <h5>Usa la piattaforma Myrror per connettere tutte le tue identità in un singolo posto!</h5><br>
-                  <button id="linkAccount" onclick="linkAccountClick()" _ngcontent-c18="" class="mat-raised-button mat-primary" color="primary" mat-raised-button=""><span class="mat-button-wrapper">Link Account</span><div class="mat-button-ripple mat-ripple" matripple=""></div><div class="mat-button-focus-overlay"></div></button>
+                  <button id="linkAccount" class=" btn btn-primary btn-rounded" onclick="linkAccountClick()" _ngcontent-c18="" class="mat-raised-button mat-primary" color="primary" mat-raised-button=""><span class="mat-button-wrapper">Collega Account</span><div class="mat-button-ripple mat-ripple" matripple=""></div><div class="mat-button-focus-overlay"></div></button>
+                
+                
                 </div>
                 </div>
+                				
         </div>
-
+		<br><br>
+		<button class=" btn " onclick="myrror_getUser();">User Data</button>
+		<button class=" btn " onclick="myrror_getInterests();">Interests Data</button>
+		<button class=" btn " onclick="myrror_getMap();">Map Data</button>
+		<button class=" btn " onclick="myrror_getSentiment();">Sentiment Data</button>
+		<button class=" btn " onclick="myrror_getEmotion();">Emotion Data</button>
     </div>
 </section>
 <!--event section end -->
