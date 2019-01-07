@@ -515,6 +515,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 		return JSON.stringify( obj );
 	}
+		
   function setcookie(name, value, days)
   {
     if (days)
@@ -540,9 +541,14 @@ $("#login").submit(function(e) {
                     success: function (response) {
                     //  var je = JSON.parse(response.responseText);
                       $("#loginRes").text("Success!");
+                      
+                      //---------------------
                       sessionStorage.setItem('tokenPugliaEvent', response.token);
                       sessionStorage.setItem('userPugliaEvent', response.username);
                       sessionStorage.setItem('emailPugliaEvent', email);
+                    //chiude la finestra di login e redirect a pagina profilo
+                     off();
+                     document.location.href = "profile.html";
                     },
                     error: function(e) {
                       var je = JSON.parse(e.responseText);
