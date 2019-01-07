@@ -28,74 +28,6 @@
     <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     
-    
-  <script>  
-    function myrror_getUser() {
-    	var obj={};
-    	obj["username"] = sessionStorage.getItem('userPugliaEvent');
-    	var json = JSON.stringify(obj)
-		$.ajax({
-			 type: 'post',
-		     url: 'http://90.147.102.243:5000/api/user',
-		     contentType: "application/json",
-		     data: json,
-		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
-		     success: function (response) {
-		       alert("success " + response.demographics.name.value + " - " + response.demographics.location[0].value);
-		     },
-		     error: function(e) {
-		       var je = JSON.parse(e.responseText);
-		       alert("failure");
-		     }
-		});
-	}
-    
-    function myrror_getInterests(){
-    	$.ajax({
-			 type: 'get',
-			 //http://90.147.102.243:5000/api/stats/interests/wordcloud?db=gperniola&from=2019-01-01T11:06:12.506Z&to=2019-01-06T11:06:12.506Z&
-		     url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
-		     contentType: "application/json",
-		     data: { 
-		    	    db: sessionStorage.getItem('userPugliaEvent'), 
-		   			},
-		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
-		     success: function (response) {
-		       alert("success getInterests ");
-		     },
-		     error: function(e) {
-		       var je = JSON.parse(e.responseText);
-		       alert("failure getInterests");
-		     }
-		});
-    	
-    }
-    
-    function myrror_getMap(){
-    	$.ajax({
-			 type: 'get',
-			 //http://90.147.102.243:5000/api/stats/map?db=gperniola&from=2019-01-01T13:40:39.952Z&to=2019-01-06T13:40:39.952Z&
-		     url: 'http://90.147.102.243:5000/api/stats/map',
-		     contentType: "application/json",
-		     data: { 
-		    	    db: sessionStorage.getItem('userPugliaEvent'), 
-		   			},
-		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
-		     success: function (response) {
-		       alert("success getMap ");
-		     },
-		     error: function(e) {
-		       var je = JSON.parse(e.responseText);
-		       alert("failure getMap");
-		     }
-		});
-    	
-    }
-        
-</script>
-
-
-
 
 </head>
 <body onload="countEv(); loadEv();">
@@ -181,9 +113,6 @@
 		<br><br>
 		<a  class=" btn btn-primary btn-rounded" onclick="countEv(); loadEv();">Cerca</a>
 	<!-- </form> -->
-
-	<br><br>
-	<a href="#" class=" btn btn-primary btn-rounded" onclick="myrror_getUser(); myrror_getInterests(); myrror_getMap();">Test</a>
 </div>
 
 <br><br><br>
@@ -443,7 +372,7 @@ function printEventi(data,i){
     var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
     
     var distanza = "";
-    if (obj.distanza != null) distanza = "<div class='distance'><strong>Distanza: </strong><span> circa "+obj.distanza+" km </span></div>";
+    if (obj.distanza != null) distanza = "<div class='distance'><strong style='color: black;'>Distanza: </strong><span> circa "+obj.distanza+" km </span></div>";
     
     var date = "";
     if (da == a) date = "<div class='event_date'> <span style='color:black'>Data</span>: "+da+"</div>";
