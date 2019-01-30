@@ -8,7 +8,7 @@
     <meta name="author" content="ColorLib">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- ========== Title ========== -->
-    <title> Evento - Event Html Template</title>
+    <title> Recommender - Recommender Html Template</title>
     <!-- ========== Favicon Ico ========== -->
     <!--<link rel="icon" href="fav.ico">-->
     <!-- ========== STYLESHEETS ========== -->
@@ -28,9 +28,10 @@
     <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     
+    <link href="assets/css/spinner.css" rel="stylesheet">
 
 </head>
-<body onload="countEv(); loadEv();">
+<body>
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -54,17 +55,24 @@
                     <a class="nav-link " href="profile.html" >Personal Page</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#" >Eventi</a>
+                    <a class="nav-link " href="events.html" >Eventi</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="places.html" >Luoghi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="recommender.html" >Recommender</a>
+                    <a class="nav-link " href="#" >Recommender</a>
                 </li>
             </ul>
         </div>
     </div>
+
+
+    
+    
+    
+
+
 </header>
 <!--header end here-->
 
@@ -76,7 +84,7 @@
             <div class="col-12">
                 <div class="inner_cover_content">
                     <h3>
-                       Eventi sul territorio dei prossimi giorni!
+                       Eventi suggeriti per te!
                     </h3>
                 </div>
             </div>
@@ -85,7 +93,7 @@
         <div class="breadcrumbs">
             <ul>
                 <li><a href="#">Home</a>  |   </li>
-                <li><span>Events</span></li>
+                <li><span>Recommender</span></li>
             </ul>
         </div>
     </div>
@@ -96,38 +104,22 @@
 <!--events section -->
 <section class="pt100 pb100">
     <div class="container">
-
-<div>
-  <h5>Filtra i nostri eventi</h5>
-<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-	<!--  <form id="cercaEventi" name = "cercaEventi" enctype='multipart/form-data'> -->
-		Città in cui cercare:&nbsp;&nbsp;
-		<input type="text" id="comune" name="comune" width="50px" nome ="comune" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		Range:&nbsp;&nbsp;
-		<span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="slider-value">50</span>&nbsp;km<br><br>
-		<div>
-			<input type="radio" name="date" value="1d"> Oggi &nbsp;&nbsp;
-  			<input type="radio" name="date" value="7d" checked> 7 Giorni &nbsp;&nbsp;
-  			<input type="radio" name="date" value="1m"> 1 Mese &nbsp;&nbsp;
-  			<input type="radio" name="date" value="6m"> 6 Mesi &nbsp;&nbsp;
+    	<!-- <div style="display: inline-block; padding-right:15px;"><h3>Emotion recommender</h3></div> -->
+		<div id ="waiting" name ="waiting">
+			<div style="text-align:center;">
+				<div class="lds-dual-ring"></div>
+				<div><h5>Stiamo processando le tue informazioni. Potrebbe volerci qualche minuto.</h5></div>
+			</div>
 		</div>
+		<div class="row">
+        	<div id ="eventiContainer1" class="col-sm"></div>
+        	<div id ="eventiContainer2" class="col-sm"></div>
+        </div>
+		
 
-  		<a name="top" id="top">
-		<br><br>
-		<a  class=" btn btn-primary btn-rounded" onclick="countEv(); loadEv();">Cerca</a>
-	<!-- </form> -->
-</div>
 
-<br><br><br>
-<div>
-	<div style="display: inline-block; padding-right:15px;"><h1>Lista Eventi</h1></div>
-	<div style="display: inline-block;"><h3 id="counterEvents"></h3></div>
-</div>
-
-<div id ="eventiContainer" name ="eventiContainer">
-</div>
-   <ul id="pagination-demo" class="pagination-sm"></ul>
-</div>
+	</div>
+	
 </section>
 <!--event section end -->
 
@@ -366,66 +358,7 @@ $("#slider").slider(
 }
 );
 
-function printEventi(data,i){
-	var obj = data;
-	
-	var dat = new Date(obj.data_da);
-    var dat_a = new Date(obj.data_a);
-    var da = dat.getDate()  + "/" + (dat.getMonth()+1) + "/" + dat.getFullYear();
-    var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
-    
-    var distanza = "";
-    if (obj.distanza != null) distanza = "<div class='distance'><strong style='color: black;'>Distanza: </strong><span> circa "+obj.distanza+" km </span></div>";
-    
-    var date = "";
-    if (da == a) date = "<div class='event_date'> <span style='color:black'>Data</span>: "+da+"</div>";
-    else date = "<div class='event_date'> <span style='color:black'>Dal</span>: "+da+" <span style='color:black'>al</span> "+a+"</div>"; 
-    	
-    $("#eventiContainer").html($("#eventiContainer").html()+"<a name ='anchor_"+i+"' id ='anchor_"+i+"'/> <div class='event_box'><div class='event_info'><div class='event_title' style='font-size:16px'>"+obj.titolo+"</div> <div class='speakers'><strong>Luogo: </strong><span> "+obj.comune+" --- <b>"+obj.posto_nome+"</b></span></div>" + distanza + date + "<div class='sliderb' style='border:1px solid;padding:10px' id='event"+i+"'>"+obj.descrizione+"</div><div class='slider_menu' id='slider_menu_"+i+"'></div></div></div>");
-}
 
-	function loadEv( ) {
-    $.ajax({
-        type: 'get',
-        url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/' + URIConstructor()+ '/0',
-        contentType: "application/json",
-        success: function (response) {
-          $("#eventiContainer").html("");
-          for (var i = 0; i < Math.min(10, response.length); i++){
-            //var obj = response[i];
-            printEventi(response[i],i);
-          }
-          setMore();
-        },
-        error: function(e) {
-          var je = JSON.parse(e.responseText);
-           alert("ko");
-        }
-    });
-
-
-};
-
-function changePageEv(page) {
-  $.ajax({
-      type: 'get',
-      url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/' + URIConstructor()+ '/'+((page*10)-10),
-      contentType: "application/json",
-      success: function (response) {
-          $("#eventiContainer").html("");
-        for (var i = 0; i < 10; i++){
-        	printEventi(response[i],i);
-        }
-        setMore();
-      },
-      error: function(e) {
-        var je = JSON.parse(e.responseText);
-         alert("ko");
-      }
-  });
-
-
-};
 
 var sliderHeight = "100px";
 
@@ -435,8 +368,10 @@ function setMore(){
                 var current = $(this);
                 current.attr("box_h", current.height()+50);
                 current.css("overflow", "hidden");
-                current.css("height", sliderHeight);
-                $("#slider_menu_"+i).html('<span>Read More</span>');
+                //current.css("height", sliderHeight);
+                current.css("height", 0);
+                current.css("display", "none");
+                $("#slider_menu_"+i).html('<span style="color:red;">Read More</span>');
                 $("#slider_menu_"+i+" span").attr("onclick","openSlider("+i+");");
                   i = i+ 1;
             });
@@ -449,7 +384,7 @@ function setMore(){
 
 function openSlider(i){
     var open_height = $("#event"+i).attr("box_h") + "px";
-
+    $("#event"+i).css("display", "block");
     $("#event"+i).animate({"height": open_height}, {duration: "slow" });
     $("#slider_menu_"+i).html('<span>Close</span>');
     $("#slider_menu_"+i+" span").attr("onclick","closeSlider("+i+");");
@@ -463,6 +398,7 @@ function closeSlider( i){
     location.href = "#anchor_"+i;                 //Go to the target element.
     history.replaceState(null,null,url);
     window.scrollTo(window.scrollX, window.scrollY - 100);
+    $("#event"+i).css("display", "none");
 }
 
 function pagin(){
@@ -510,6 +446,138 @@ $('#pagination-demo').twbsPagination({
 
          });
 
+  
+  function createPayloadData(topicData){
+	  	
+	 	 var behavior = 'behavior:{empathy:'+ sessionStorage.getItem('empathy') +
+	 		 			', agreeableness:'+ sessionStorage.getItem('agreeableness') +
+	 		 			', conscientiousness:'+ sessionStorage.getItem('conscientiousness') +
+	 		 			', extroversion:'+ sessionStorage.getItem('extroversion') +
+	 		 			', neuroticism:'+ sessionStorage.getItem('neuroticism') +
+	 		 			', openness:'+ sessionStorage.getItem('openness') +
+	 		 			'}';
+	  	
+	  	var topics = 'topics:'+JSON.stringify(topicData.results.entry);
+		var payload = '{data:{'+ behavior + ", " + topics + '}}';
+	  
+		return payload;  
+  }
+  
+  
+  $(document).ready(function(){
+	   console.log("loading emotions");
+	   
+		
+	   var messages = 10;
+	   $.ajax({	////////// FIRST AJAX
+			 //type: 'get',
+			 type: 'post',
+		     //url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     url: 'http://90.147.102.243:5000/api/twitter/user_timeline',
+		     contentType: "application/json",
+		     
+		     /*data: { 
+		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		    	    source: "message_tag"
+		   			},*/
+		   	 data:JSON.stringify({messages}),
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 var info = JSON.parse(myjson);    
+		    	 
+		    	 /*var op = info.map(function(item) {
+		    		  return item.value;*/
+		    	var op = info.messages.map(function(item) {
+		    		  return item.text;
+		    		});
+		    	 //console.log(op);
+		    	 //myrror_getOpinionMining(op.slice(0,10));
+		    	 
+		    	 var messages = op.slice(0,10);
+		    	$.ajax({	////////// SECOND AJAX
+		  			 type: 'post',
+		  		     url: 'http://90.147.170.25:8080/PersonalityEmpathy/rest/UserService/opinionMining',
+		  		     contentType: "application/json",
+		  		     data: JSON.stringify({messages}),
+		  	
+		  		     success: function (response) {
+							var payload = createPayloadData(response);
+						
+
+			  		    	$.ajax({	//////////// THIRD AJAX
+			  		        	type: 'post',
+			  		          	url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/emotionRec',
+			  		          	contentType: "application/json",
+			  		          	data: payload,
+			  		          	success: function (response) {
+			  		          		//**********************************************
+			  		          		//*********** DO STUFF HERE ********************
+			  		          		//**********************************************
+				  		    	 	//document.getElementById("emotionRecommenderLoading").innerHTML = JSON.stringify(response);
+			  		          		var element = document.getElementById("waiting");
+									element.parentNode.removeChild(element);
+									document.getElementById("eventiContainer1").innerHTML = "<h3>Lista 1</h3>";
+			  		          		//document.getElementById("waiting").innerHTML="";
+				  		    	 	for (var i = 0; i < Math.min(10, response.length); i++){
+				  		              //var obj = response[i];
+				  		              printEventi(response[i],i);
+				  		            }
+				  		            setMore();
+			  		          	}
+			  		    	}) //close third ajax call
+			  		    	
+
+
+			  		    	$.ajax({	//////////// Python call
+			  		        	type: 'post',
+			  		          	url: 'http://127.0.0.1:8080/PugliaEventi/cgi-bin/hello.py',
+			  		          	//contentType: "application/json",
+			  		          	data: {event1: 'foo', event2: 'bar'},
+			  	         	success: function(response){
+			  	         		document.getElementById("eventiContainer2").innerHTML = "<h3>Lista 2</h3>" + response;
+			  	         		//document.getElementById("eventiContainer2").innerHTML=response;
+			  	             }
+			  		    	}) //close python
+			  		    	
+		  		    	 	     
+		  		     },
+		  		     error: function(e) {
+		  		       var je = JSON.parse(e.responseText);
+		  		       alert("failure opinionMining");
+		  		       //return false;
+		  		     }
+		    	   	}) //close second ajax call
+		    	   	
+		    	   	
+		    	 
+		    },
+		   	error: function(e) {
+	       var je = JSON.parse(e.responseText);
+	       alert("failure getInterests");
+	       //return false;
+	    }
+	  })  //close first ajax call
+  }); //close function
+	   
+  
+  function printEventi(data,i){
+		var obj = data;
+		
+		var dat = new Date(obj.data_da);
+	    var dat_a = new Date(obj.data_a);
+	    var da = dat.getDate()  + "/" + (dat.getMonth()+1) + "/" + dat.getFullYear();
+	    var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
+	    
+	    var distanza = "";
+	    if (obj.distanza != null) distanza = "<div class='distance'><strong style='color: black;'>Distanza: </strong><span> circa "+obj.distanza+" km </span></div>";
+	    
+	    var date = "";
+	    if (da == a) date = "<div class='event_date'> <span style='color:black'>Data</span>: "+da+"</div>";
+	    else date = "<div class='event_date'> <span style='color:black'>Dal</span>: "+da+" <span style='color:black'>al</span> "+a+"</div>"; 
+	    	
+	    $("#eventiContainer1").html($("#eventiContainer1").html()+"<a name ='anchor_"+i+"' id ='anchor_"+i+"'/> <div class='event_box'><div class='event_info'><div class='event_title' style='font-size:16px'><span style='font-size:24px; color:red;'>"+(i+1)+".</span>&nbsp;&nbsp;&nbsp;"+obj.titolo+"</div> <div class='speakers'><strong>Luogo: </strong><span> "+obj.comune+" --- <b>"+obj.posto_nome+"</b></span></div>" + distanza + date + "<div class='sliderb' style='border:1px solid;padding:10px' id='event"+i+"'>"+obj.descrizione+"</div><div class='slider_menu' id='slider_menu_"+i+"'></div></div></div>");
+	}
 
 </script>
 

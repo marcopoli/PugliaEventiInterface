@@ -2577,11 +2577,11 @@ Cover
 7 Event box
 -------------------------------------------------------- */
 .event_box {
-  margin: 70px 0;
+  margin: 30px 0;
 }
 .event_box .event_info {
   position: relative;
-  margin: 30px 0;
+  margin: 20px 0;
 }
 .event_box .event_info .event_title {
   font-size: 36px;

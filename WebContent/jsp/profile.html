@@ -65,10 +65,24 @@
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		    	    source: "message_tag"
 		   			},
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
 		     success: function (response) {
 		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
+		    	 
+		    	 var info = JSON.parse(myjson);    
+		    	 console.log("wo:::" + myjson);
+		    	 //var values = info[0].value;
+		    	 
+		    	 var op = info.map(function(item) {
+		    		  return item.value;
+		    		});
+		    	 console.log(op.slice(0,10));
+		    	 myrror_getOpinionMining(op.slice(0,10));
+		    	 
+		    	 
 		    	 x.document.open();
 			       x.document.write('<html><body><h2>INTERESTS DATA</h2><pre>' + myjson + '</pre></body></html>');
 			       x.document.close();
@@ -94,6 +108,7 @@
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
 		     success: function (response) {
 		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
 		    	 x.document.open();
 			       x.document.write('<html><body><h2>MAP DATA</h2><pre>' + myjson + '</pre></body></html>');
 			       x.document.close();
@@ -101,6 +116,30 @@
 		     error: function(e) {
 		       var je = JSON.parse(e.responseText);
 		       alert("failure getMap");
+		     }
+		});
+    	
+    }
+    
+    function myrror_getPosts(){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+		var messages = 10;
+    	$.ajax({
+			 type: 'post',
+		     url: 'http://90.147.102.243:5000/api/twitter/user_timeline',
+		     contentType: "application/json",
+		     data: JSON.stringify({messages}),
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>POST DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getPosts");
 		     }
 		});
     	
@@ -155,6 +194,38 @@
 		});
     	
     }
+    
+    function myrror_getOpinionMining(data){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+		//var data = '{"messages":["wow bloodborne playstation 4","vacanze a londra","nuovo film marvel al cinema","libri e ancora libri fantasy e di fantascienza","nuove serie tv su netflix","giro ad hastings","serata tranquilla al cinema","cinema e birra","videogames","videogiochi e libri"]}';
+    //var messages = ["wow bloodborne playstation 4","vacanze a londra","nuovo film marvel al cinema","libri e ancora libri fantasy e di fantascienza","nuove serie tv su netflix","giro ad hastings","serata tranquilla al cinema","cinema e birra","videogames","videogiochi e libri"];
+    	//var messages = "[wow bloodborne playstation 4,vacanze a londra,nuovo film marvel al cinema,libri e ancora libri fantasy e di fantascienza,nuove serie tv su netflix,giro ad hastings,serata tranquilla al cinema,cinema e birra,videogames,videogiochi e libri]";
+    	var messages = data;
+		$.ajax({
+			 type: 'post',
+			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
+		     url: 'http://90.147.170.25:8080/PersonalityEmpathy/rest/UserService/opinionMining',
+		     contentType: "application/json",
+		     data: JSON.stringify({messages}),
+		    	   // messages : msg
+		   			//},
+		     //headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response);
+		    	 var kj = response.results.entry;
+		    	 console.log(kj);
+		    	 var kj2 = JSON.stringify(kj);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>OPINION DATA</h2><pre>' + kj2 + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
         
 </script>
     
@@ -197,6 +268,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="places.html" >Luoghi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="recommender.html" >Recommender</a>
                 </li>
             </ul>
         </div>
@@ -257,6 +331,8 @@
 		<button class=" btn " onclick="myrror_getMap();">Map Data</button>
 		<button class=" btn " onclick="myrror_getSentiment();">Sentiment Data</button>
 		<button class=" btn " onclick="myrror_getEmotion();">Emotion Data</button>
+		<button class=" btn " onclick="myrror_getOpinionMining();">Opinion Mining</button>
+		<button class=" btn " onclick="myrror_getPosts();">Posts</button>
     </div>
 </section>
 <!--event section end -->
@@ -421,6 +497,7 @@ function myrror_getUserData() {
 	    	 	document.getElementById("profileImage").src = response.pictureUrl;
 	    	 
 	    	 checkConnectedSocials(response);
+	    	 getBehaviorData(response);
 	     },
 	     error: function(e) {
 	       var je = JSON.parse(e.responseText);
@@ -460,6 +537,29 @@ function checkConnectedSocials(data){
 	li.appendChild(document.createTextNode("No linked account")); 
 	document.getElementById("checkMyrror").appendChild(li); 
 	}
+}
+
+function getBehaviorData(data){
+	if (data.hasOwnProperty("empathies") && data.hasOwnProperty("personalities")){
+		
+		sessionStorage.setItem('empathy', data.empathies[data.empathies.length-1].value);
+		sessionStorage.setItem('agreeableness', data.personalities[data.personalities.length-1].agreeableness);
+		sessionStorage.setItem('conscientiousness', data.personalities[data.personalities.length-1].conscientiousness);
+		sessionStorage.setItem('extroversion', data.personalities[data.personalities.length-1].extroversion);
+		sessionStorage.setItem('neuroticism', data.personalities[data.personalities.length-1].neuroticism);
+		sessionStorage.setItem('openness', data.personalities[data.personalities.length-1].openness);
+		
+		
+		console.log(	"emp: " + sessionStorage.getItem('empathy') + 
+						"\nagr: " + sessionStorage.getItem('agreeableness') + 
+						"\ncon: " + sessionStorage.getItem('conscientiousness') + 
+						"\next: " + sessionStorage.getItem('extroversion') + 
+						"\nneu: " + sessionStorage.getItem('neuroticism') + 
+						"\nope: " + sessionStorage.getItem('openness')
+		);
+	}
+	
+	
 }
 
 
