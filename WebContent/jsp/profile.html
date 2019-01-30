@@ -197,10 +197,7 @@
     
     function myrror_getOpinionMining(data){
 		var x = window.open("", "newWindow", "width=1000,height=800");
-		//var data = '{"messages":["wow bloodborne playstation 4","vacanze a londra","nuovo film marvel al cinema","libri e ancora libri fantasy e di fantascienza","nuove serie tv su netflix","giro ad hastings","serata tranquilla al cinema","cinema e birra","videogames","videogiochi e libri"]}';
-    //var messages = ["wow bloodborne playstation 4","vacanze a londra","nuovo film marvel al cinema","libri e ancora libri fantasy e di fantascienza","nuove serie tv su netflix","giro ad hastings","serata tranquilla al cinema","cinema e birra","videogames","videogiochi e libri"];
-    	//var messages = "[wow bloodborne playstation 4,vacanze a londra,nuovo film marvel al cinema,libri e ancora libri fantasy e di fantascienza,nuove serie tv su netflix,giro ad hastings,serata tranquilla al cinema,cinema e birra,videogames,videogiochi e libri]";
-    	var messages = data;
+		var messages = data;
 		$.ajax({
 			 type: 'post',
 			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
