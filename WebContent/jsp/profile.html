@@ -29,6 +29,10 @@
     
         
   <script>  
+  for (var i = 0; i < sessionStorage.length; i++){
+	    // do something with localStorage.getItem(localStorage.key(i));
+	    console.log(sessionStorage.getItem(sessionStorage.key(i)));
+	}
     function myrror_getUser() {
     	var x = window.open("", "newWindow", "width=1000,height=800");
     	var obj={};
@@ -488,7 +492,7 @@ function myrror_getUserData() {
 	    	 //console.log(response.demographics.name.value + "  " + response.pictureUrl);
 	    	 if (response.demographics.hasOwnProperty('name'))
 	    	 	document.getElementById("userName").innerHTML = response.demographics.name.value;
-	    	 else document.getElementById("userName").innerHTML = response.username;
+	    	 else document.getElementById("userName").innerHTML = response.username ;
 	    	 
 	    	 if (response.hasOwnProperty('pictureUrl'))
 	    	 	document.getElementById("profileImage").src = response.pictureUrl;

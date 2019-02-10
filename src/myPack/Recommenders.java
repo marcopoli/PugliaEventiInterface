@@ -5,8 +5,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,6 +96,8 @@ class Recommenders {
 		
 		final int N_OF_RECOMMENDATIONS = 10;
 		
+		
+		
 		Connection conn = null;
 		
 		try{
@@ -120,6 +125,11 @@ class Recommenders {
             String topicName = "";
             if (iend != -1) topicName = key.substring(0 , iend);
             else topicName = key;
+            
+            //combine sport and travel topics
+            if (topicName.equals("sport") ||topicName.contentEquals("travel")){
+            	topicName = "sport_or_travel";
+            }
             
             // check if topic already inserted, then add value
             Topic t = new Topic(topicName,value);
@@ -149,7 +159,6 @@ class Recommenders {
 	 			+ "eventi.data_a,"
 	 			+ "eventi.descrizione,popolarita";
 	 	
-	 	
 	 	for (Topic x : userTopics) {
 	 		String query = "";
 	 		int normalizedValue = Math.round((float)(x.value * N_OF_RECOMMENDATIONS) / processedWords);
@@ -158,71 +167,71 @@ class Recommenders {
 	 		case "tech":
 	 			System.out.println("case: tech");
 	 			if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1 AND popolarita < 180";
 	 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1 AND popolarita > 180";
 	 			else
-	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE geek = 1" + normalizedValue;
 	 			break;
-	 		case "sport":
-	 		case "travel":
-	 			System.out.println("case: sport or travel (" + x.name +")");
-	 			if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE avventura = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
-	 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-	 				query = "SELECT  " + selectFields + "  FROM eventi WHERE avventura = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
-	 			else
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE avventura = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 		case "sport_or_travel":
+	 		//case "travel":
+		 		System.out.println("case: sport or travel (" + x.name +")");
+		 		if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
+		 			query = "SELECT  " + selectFields + "  FROM eventi WHERE avventura = 1 AND popolarita < 180";
+		 		else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
+		 			query = "SELECT  " + selectFields + "  FROM eventi WHERE avventura = 1 AND popolarita > 180";
+		 		else
+		 			query = "SELECT " + selectFields + " FROM eventi WHERE avventura = 1";
 	 			break;
 	 		case "politics":
 	 			System.out.println("case: politics");
 	 			if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1 AND popolarita < 180";
 	 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1 AND popolarita > 180";
 	 			else
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT " + selectFields + " FROM eventi WHERE cittadinanza = 1";
 	 			break;
 	 		case "music":
 	 			System.out.println("case: music");
 	 			switch (p.maxbig5Name()){
 	 			case "openness":
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (jazz = 1 OR musica_classica = 1) AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (jazz = 1 OR musica_classica = 1) AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (jazz = 1 OR musica_classica = 1) AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (jazz = 1 OR musica_classica = 1) AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE jazz = 1 OR musica_classica = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (jazz = 1 OR musica_classica = 1)";
 	 				break;
 	 			case "conscientiousness":
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 OR folklore = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1)";
 	 				break;
 	 			case "extroversion":
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1) AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 OR folklore = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE (concerti = 1 OR folklore = 1)";
 	 				break;
 	 			case "agreeableness":
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1";
 	 				break;
 	 			case "neuroticism":
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 AND popolarita < 180";
 	 				break;
 	 			default:
-	 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+	 				query = "SELECT " + selectFields + " FROM eventi WHERE concerti = 1";
 	 				break;	
 	 			}
 	 			break;
@@ -230,61 +239,66 @@ class Recommenders {
 	 			System.out.println("case: style");
 	 			if(p.extroversion + (p.extroversion * p.empathy / 78) > 0.715 || p.openness + (p.openness * p.empathy / 78) > 0.7574){
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi WHERE vita_notturna = 1";
 	 			}
 	 			else {
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE raffinato = 1";
 	 			}
 	 			break;
 	 		case "art":
 	 			System.out.println("case: art");
 	 			if(p.conscientiousness + (p.conscientiousness * p.empathy / 78) > 0.6973 && p.extroversion + (p.extroversion * p.empathy / 78) > 0.715) {
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.cultura = 1 AND libri = 1";
 	 			}
 	 			else {
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.arte = 1";
 	 			}
 	 			break;
 	 		case "movie":
 	 			System.out.println("case: movie");
 	 			if(p.conscientiousness + (p.conscientiousness * p.empathy / 78) > 0.6973) {
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE eventi.teatro = 1";
 	 			}
 	 			else {
 	 				if(p.neuroticism + (p.neuroticism * p.empathy / 78) > 0.5547)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1 AND popolarita < 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1 AND popolarita < 180";
 		 			else if (p.neuroticism + (p.neuroticism * p.empathy / 78) < 0.5547 || p.openness + (p.openness * p.empathy / 78) < 0.7573)
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1 AND popolarita > 180 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1 AND popolarita > 180";
 		 			else
-		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1 ORDER BY data_da DESC LIMIT " + normalizedValue;
+		 				query = "SELECT " + selectFields + " FROM eventi INNER JOIN luoghi ON eventi.posto_nome = luoghi.nomeposto WHERE cinema = 1";
 	 			}
 	 			break;
 	 		}
- 			
+	 		
+	 		Calendar date = Calendar.getInstance();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+			String queryData = "data_a >= '" + formatter.format(date.getTime()) + "' ";
+	 		
+ 			query = query + " AND " + queryData + " ORDER BY data_da ASC LIMIT " + normalizedValue;
  			System.out.println(query);
  			ResultSet rs = st.executeQuery(query);
  			ResultSetMetaData rsmd = rs.getMetaData();

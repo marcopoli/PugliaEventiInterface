@@ -29,8 +29,10 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     
 
+
 </head>
-<body onload="countEv(); loadEv();">
+
+<body onload="loadLocation(); countEv(); loadEv();">
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -316,6 +318,13 @@ function URIConstructor(){
 
 <script>
 var numev = 1;
+
+function loadLocation(){
+
+	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
+	console.log(sessionStorage.getItem('userLocation'));
+}
+
 
 function countEv(){
 	

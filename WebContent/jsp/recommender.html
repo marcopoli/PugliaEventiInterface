@@ -495,15 +495,17 @@ $('#pagination-demo').twbsPagination({
 		    	 //myrror_getOpinionMining(op.slice(0,10));
 		    	 
 		    	 var messages = op.slice(0,10);
-		    	$.ajax({	////////// SECOND AJAX
+		    	 
+		    	/*** DEBUG ***/
+		    	/*$.ajax({	////////// SECOND AJAX
 		  			 type: 'post',
 		  		     url: 'http://90.147.170.25:8080/PersonalityEmpathy/rest/UserService/opinionMining',
 		  		     contentType: "application/json",
 		  		     data: JSON.stringify({messages}),
 		  	
 		  		     success: function (response) {
-							var payload = createPayloadData(response);
-						
+							var payload = createPayloadData(response);;*/
+							var payload = createPayloadData(JSON.parse('{"results":{"entry":[{"key":"politics_joy","value":"1"},{"key":"sport_surprise","value":"1"},{"key":"travel_surprise","value":"1"},{"key":"travel_joy","value":"1"}]}}'));
 
 			  		    	$.ajax({	//////////// THIRD AJAX
 			  		        	type: 'post',
@@ -529,25 +531,37 @@ $('#pagination-demo').twbsPagination({
 			  		    	
 
 
-			  		    	$.ajax({	//////////// Python call
+			  		    	/*$.ajax({	//////////// Python call
 			  		        	type: 'post',
-			  		          	url: 'http://127.0.0.1:8080/PugliaEventi/cgi-bin/hello.py',
+			  		          	url: 'http://127.0.0.1:8080/PugliaEventi/cgi-bin/initializer.py',
 			  		          	//contentType: "application/json",
 			  		          	data: {event1: 'foo', event2: 'bar'},
 			  	         	success: function(response){
 			  	         		document.getElementById("eventiContainer2").innerHTML = "<h3>Lista 2</h3>" + response;
 			  	         		//document.getElementById("eventiContainer2").innerHTML=response;
 			  	             }
+			  		    	}) //close python*/
+			  		    	
+			  		    	$.ajax({	//////////// Python call
+			  		        	type: 'post',
+			  		          	url: 'http://127.0.0.1:8000/SumView/',
+			  		          	//contentType: "application/json",
+			  		          	data: {"firstnum": 6, "secondnum": 4},
+			  	         	success: function(response){
+			  	         		document.getElementById("eventiContainer2").innerHTML = "<h3>Lista 2</h3>" + response.result_data;
+			  	         		//document.getElementById("eventiContainer2").innerHTML=response;
+			  	             }
 			  		    	}) //close python
 			  		    	
 		  		    	 	     
-		  		     },
+		  		     /********DEBUG*/
+		  		    /* },
 		  		     error: function(e) {
 		  		       var je = JSON.parse(e.responseText);
 		  		       alert("failure opinionMining");
 		  		       //return false;
 		  		     }
-		    	   	}) //close second ajax call
+		    	   	}) //close second ajax call*/
 		    	   	
 		    	   	
 		    	 

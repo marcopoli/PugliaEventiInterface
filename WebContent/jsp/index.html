@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+ 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+        
 
   <script>
   function on() {
@@ -162,6 +163,10 @@
         <tr>
           <td>Re-Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td><input name ="password2" id ="passwordIscr2" type="password" width="80px"/>
+        </tr>
+        <tr>
+          <td>Città di residenza:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td><input name ="comune" id ="comune"  width="80px"/>
         </tr>
         <tr><td colspan="2"><br><br><input class=" btn btn-primary btn-rounded" type="submit" name="submit" id="submit" value="Iscriviti"/></td></tr>
         <tr><td colspan="2"><div onclick="offIscr(); on();" style="color:blue!important;font-size:12px!important">Hai già un account?Entra!</div></td></tr>
@@ -498,6 +503,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
 <script src="assets/js/main.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 
 <script type='text/javascript'>
 	function toJSONString( form ) {
@@ -543,12 +551,25 @@ $("#login").submit(function(e) {
                       $("#loginRes").text("Success!");
                       
                       //---------------------
+                      sessionStorage.clear();
                       sessionStorage.setItem('tokenPugliaEvent', response.token);
                       sessionStorage.setItem('userPugliaEvent', response.username);
                       sessionStorage.setItem('emailPugliaEvent', email);
-                    //chiude la finestra di login e redirect a pagina profilo
-                     off();
-                     document.location.href = "profile.html";
+                      
+                      $.ajax({	//////////// Python call to get user location
+		  		        	type: 'post',
+		  		          	url: 'http://127.0.0.1:8000/GetUserLocation/',
+		  		          	//contentType: "application/json",
+		  		          	data: {"username": response.username},
+		  	         		success: function(response){
+		  	         			var loc = response.user_location;
+		  	         			sessionStorage.setItem('userLocation', loc);
+		  	         			//chiude la finestra di login e redirect a pagina profilo
+		  	         			off();
+			                    document.location.href = "profile.html";  	                
+		  	             }
+		  		    	}) //close python
+		  		    	           
                     },
                     error: function(e) {
                       var je = JSON.parse(e.responseText);
@@ -563,9 +584,10 @@ $("#login").submit(function(e) {
           var email = document.getElementById('emailIscr').value;
           var password = document.getElementById('passwordIscr').value;
           var password2 = document.getElementById('passwordIscr2').value;
+          var comune = document.getElementById('comune').value;
 
 
-          if (password == password2 && username != "" && email !=""){
+          if (password == password2 && username != "" && email !="" && comune != "" && password != ""){
                         var json = toJSONString( this );
 
                         $.ajax({
@@ -579,6 +601,15 @@ $("#login").submit(function(e) {
                               sessionStorage.setItem('tokenPugliaEvent', response.token);
                               sessionStorage.setItem('userPugliaEvent', username);
                               sessionStorage.setItem('emailPugliaEvent', email);
+                              $.ajax({	//////////// Python call to add new user
+  			  		        	type: 'post',
+  			  		          	url: 'http://127.0.0.1:8000/AddUser/',
+  			  		          	//contentType: "application/json",
+  			  		          	data: {"username": username, "location": comune},
+  			  	         		success: function(response){
+  								//success
+  			  	             }
+  			  		    	}) //close python
                             },
                             error: function(e) {
                               var je = JSON.parse(e.responseText);
@@ -590,8 +621,32 @@ $("#login").submit(function(e) {
                       }
 
                 });
+        
+        $(function() {
+            $( "#comune" ).autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                      type: 'get',
+                      url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
+                      contentType: "application/json",
+                        success: function( data ) {
+                            response( data );
+                        }
+
+                    });
+                },
+                change: function (event, ui) {
+                    if(!ui.item){
+                        //http://api.jqueryui.com/autocomplete/#event-change -
+                        // The item selected from the menu, if any. Otherwise the property is null
+                        //so clear the item for force selection
+                        $("#comune").val("");
+                    }
+                },
+            });
+
+        });
 
   </script>
-
 </body>
 </html>
