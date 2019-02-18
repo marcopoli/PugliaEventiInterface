@@ -91,8 +91,8 @@ a {
   color: inherit;
   text-decoration: none;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 400;
+  /*font-size: 13px;
+  font-weight: 400;*/
   -webkit-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
 }
@@ -100,9 +100,11 @@ a {
 a:hover,
 a:focus,
 a:active {
-  text-decoration: none;
+  text-decoration: underline;
   outline: none;
-  color: #838383;
+  /*color: #838383;
+  color: #f50136;*/
+  color: red;
   -webkit-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
 }
@@ -1815,7 +1817,7 @@ footer ul.instagram_list li {
   margin: 0 0 2% 2%;
   float: left;
 }
-footer .newsletter_form .form-control {
+footer .newsletter_form /*.form-control*/ {
   background-color: #1f1039;
   border: solid 1px #1f1039;
   font-weight: 500;
@@ -2608,12 +2610,20 @@ Cover
 .event_box .event_info .speakers span {
   font-size: 14px;
   font-weight: 400;
+  color: black;
 }
-.event_box .event_info .event_date {
+.event_box .event_info .event_date, .event_tags, .event_distance {
   color: #f50136;
   font-size: 12px;
   font-weight: 700;
 }
+.event_box .event_info .event_distance, .event_meteo {
+  color: #838383;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
 .event_box .readmore_btn {
   margin-top: 25px;
   display: inline-block;
@@ -3074,7 +3084,7 @@ Cover
   min-height: 400px;
 }
 
-.form-control {
+/*.form-control {
   font-size: 12px;
   padding: 12px 15px;
   height: 50px;
@@ -3087,17 +3097,18 @@ Cover
   -webkit-transition: all ease-in-out 0.4s;
   transition: all ease-in-out 0.4s;
 }
+*/
 .form-control:focus {
   background-color: #ffffff;
   border-color: #f50136;
   -webkit-transition: all ease-in-out 0.4s;
   transition: all ease-in-out 0.4s;
 }
-
+/*
 textarea.form-control {
   min-height: 200px;
   resize: vertical;
-}
+}*/
 
 /*  ----------------------------------------------------
 12 progressbar
