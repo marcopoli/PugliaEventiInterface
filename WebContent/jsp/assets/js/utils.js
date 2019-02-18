@@ -20,7 +20,6 @@ function printCellEvento(containerId, indiceEvento, cellId, titolo, linkEvento, 
 			"<div class='collapse' id='readMore"+cellId+"'><div class ='card card-body'>" + descrizione + "</div>";
 }
 
-
 function printEventi(data,i, cellOffset, container){
 	var obj = data;
 	
@@ -83,10 +82,17 @@ function printEventi(data,i, cellOffset, container){
     var comune = obj.comune;
     if (obj.posto_nome != "") comune = comune + " | ";
     
-    
-    
+       
     printCellEvento(container, i+1, cellOffset, obj.titolo, obj.link, comune, obj.posto_nome, obj.posto_link, date, obj.descrizione, distanza, tags, meteo);
 }
+
+
+
+
+
+
+
+
 
 
 function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, indirizzo, contatti, tipo, distanza, tags, eventiProgrammati){
@@ -99,9 +105,6 @@ function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, in
 	//+ contatti; // tags + eventiProgrammati 
 	
 }
-
-
-
 
 function printPlaces(data,i, cellOffset, container){
 	var obj = data;
@@ -154,11 +157,21 @@ function printPlaces(data,i, cellOffset, container){
     	
     	eventiProgrammati = eventiProgrammati + "</ul></div>";
     }
-    
-    
-    
+       
     printCellPlace(container, i+1, cellOffset, obj.name, obj.link, comune, obj.indirizzo, contatti, obj.tipo, distanza, tags, eventiProgrammati);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 function pagin(tipo){
 $('#pagination-demo').twbsPagination({
@@ -186,103 +199,6 @@ function makePages(len, tipo){
 }
 
 
-
-
-
-function loadAllPlaces(){
-	document.getElementById("waiting").innerHTML ='<div style="text-align:center;"><div class="lds-dual-ring"></div><div><h5>Recupero dati in corso..</h5></div></div>';
-	document.getElementById("placesContainer").innerHTML ="";
-	document.getElementById("listPlaceholder").innerHTML ="";
-	document.getElementById("counterPlaces").innerHTML =""
-	var onlyPlacesWithEvents = 0;
-	if (document.getElementById("checkPlacesWithEvents").checked) onlyPlacesWithEvents = 1;
-	
-    $.ajax({
-        type: 'post',
-        url: 'http://127.0.0.1:8000/api/getAllPlaces/',
-        data:{
-        	'location':document.getElementsByName('comune')[0].value,
-        	'range':document.getElementById("slider-value").innerHTML,
-        	'only-with-events': onlyPlacesWithEvents
-        },
-        success: function (response) {
-        	allPlaces = response;
-        	document.getElementById("waiting").innerHTML = "";
-        	makePages(allPlaces.length, 1);
-        	document.getElementById("listPlaceholder").innerHTML= "<h1>Punti di interesse </h1>";
-        	document.getElementById("counterPlaces").innerHTML= " ("+ allPlaces.length + " trovati)";
-        	loadPagePlaces(1);
-        	
-        },
-        error: function(e) {
-          var je = JSON.parse(e.responseText);
-           alert("ko");
-        }
-    });
-}
-
-function loadPagePlaces(page){
-	var placeColumns = 2;
-	var elements = 20;
-	var pageOffset =  ((page*elements)-elements);
-	$("#placesContainer").html("");
-	var row = 0;
-	for (var i = pageOffset; i < Math.min((page*elements), allPlaces.length); i++){
-		if (i % placeColumns == 0){
-			document.getElementById('placesContainer').innerHTML =   document.getElementById('placesContainer').innerHTML + "<div class = 'row' id='placerow" + parseInt(i/placeColumns) + "'></div>";
-		}
-		console.log("inserting in " + "placerow"+parseInt(i/placeColumns));
-        printPlaces(allPlaces[i],i, i, "placerow"+parseInt(i/placeColumns));
-      }
-}
-
-
-
-
-function loadAllEvents() {
-	document.getElementById("waiting").innerHTML ='<div style="text-align:center;"><div class="lds-dual-ring"></div><div><h5>Recupero dati in corso..</h5></div></div>';
-	document.getElementById("eventiContainer").innerHTML ="";
-	document.getElementById("listPlaceholder").innerHTML ="";
-	document.getElementById("counterEvents").innerHTML =""
-	var noWeatherData = 0;
-	if (document.getElementById("checkNoMeteoData").checked) noWeatherData = 1;
-	
-    $.ajax({
-        type: 'post',
-        url: 'http://127.0.0.1:8000/api/getAllEvents/',
-        data:{
-        	//'days':$("input[name=date]:checked").val(),
-        	'location':document.getElementsByName('comune')[0].value,
-        	'range':document.getElementById("slider-value").innerHTML,
-        	'weather': document.getElementById("sliderMeteo-value").innerHTML,
-        	'no-weather-data': noWeatherData,
-        	'start-date': start_date,
-        	'end-date': end_date
-        },
-        success: function (response) {
-        	allEvents = response;
-        	document.getElementById("waiting").innerHTML = "";
-        	makePages(allEvents.length, 0);
-        	document.getElementById("listPlaceholder").innerHTML= "<h1>Eventi </h1>";
-        	document.getElementById("counterEvents").innerHTML= " ("+ allEvents.length + " trovati)";
-        	loadPageEvents(1);
-        	
-        },
-        error: function(e) {
-          var je = JSON.parse(e.responseText);
-           alert("ko");
-        }
-    });
-}
-
-function loadPageEvents(page){
-	var pageOffset =  ((page*10)-10);
-	$("#eventiContainer").html("");
-	for (var i = pageOffset; i < Math.min((page*10), allEvents.length); i++){
-        printEventi(allEvents[i],i, i, "eventiContainer");
-      }
-}
-
 function createPayloadData(topicData){	
 	 var behavior = 'behavior:{empathy:'+ sessionStorage.getItem('empathy') +
 		 			', agreeableness:'+ sessionStorage.getItem('agreeableness') +
@@ -295,6 +211,9 @@ function createPayloadData(topicData){
 	var payload = '{data:{'+ behavior + ", " + topics + '}}';
 	return payload;  
 }
+
+
+
 
 
 
