@@ -28,11 +28,14 @@
     <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     
+    
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
 </head>
 
-<body onload="loadLocation(); countEv(); loadEv();">
+<body onload="loadAllEvents();"> 
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -98,29 +101,60 @@
 <!--events section -->
 <section class="pt100 pb100">
     <div class="container">
-
-<div>
-  <h5>Filtra i nostri eventi</h5>
-<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-	<!--  <form id="cercaEventi" name = "cercaEventi" enctype='multipart/form-data'> -->
-		Città in cui cercare:&nbsp;&nbsp;
-		<input type="text" id="comune" name="comune" width="50px" nome ="comune" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		Range:&nbsp;&nbsp;
-		<span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="slider-value">50</span>&nbsp;km<br><br>
-		<div>
-			<input type="radio" name="date" value="1d"> Oggi &nbsp;&nbsp;
-  			<input type="radio" name="date" value="7d" checked> 7 Giorni &nbsp;&nbsp;
-  			<input type="radio" name="date" value="1m"> 1 Mese &nbsp;&nbsp;
-  			<input type="radio" name="date" value="6m"> 6 Mesi &nbsp;&nbsp;
+    	<div>
+  			<h5>Filtra i nostri eventi</h5>
+  			<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+			<!--  <form id="cercaEventi" name = "cercaEventi" enctype='multipart/form-data'> -->
+  			<form>
+				<div class="form-group form-inline">
+					<label for="comune" class="col-sm-2 col-form-label">Città in cui cercare </label>
+					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune" /></div>
+				</div>
+				<div class="form-group form-inline">
+					<label for="daterange" class="col-sm-2 col-form-label">Intervallo di tempo</label>
+					<div class="col-sm-4"><input class="form-control" type="text" name="daterange" id="daterange" /></div>
+				</div>
+				<div class="form-group form-inline">
+					<label for="slider" class="col-sm-2 col-form-label">Raggio di ricerca </label>
+					<div class="col-sm-4"><span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="slider-value">50</span>&nbsp;km</strong></div>
+				</div>
+				<div class="form-group form-inline">
+					<label for="sliderMeteo" class="col-sm-2 col-form-label">Condizioni meteo </label>
+					<div class="col-sm-4"><span id="sliderMeteo" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="sliderMeteo-label">Qualsiasi</span></strong><span class="d-none" id="sliderMeteo-value">0</span></div>
+				</div>
+				<div class="form-group form-inline">
+  					<label class="form-check-label col-sm-5" for="checkNoMeteoData">Mostra eventi con previsioni non disponibili nelle date indicate</label>
+  					<input class="form-check-input" type="checkbox" value="" id="checkNoMeteoData" checked>	
+				</div>
+				<!-- 
+ 				<div class="form-group form-inline">
+ 					<label class="col-sm-2 col-form-label">Intervallo di tempo</label>
+    				<div class="form-check col-sm-2">
+				  		<input class="form-check-input" type="radio"  name="date" id="radio1" value="1d">
+				  		<label class="form-check-label" for="radio1"><strong>Oggi</strong></label>
+					</div>
+					<div class="form-check col-sm-2">
+				  		<input class="form-check-input" type="radio"  name="date" id="radio2" value="7d" checked>
+				  		<label class="form-check-label" for="radio2"><strong>Prossimi 7 giorni</strong></label>
+					</div>
+					<div class="form-check col-sm-2">
+				  		<input class="form-check-input" type="radio"  name="date" id="radio3" value="1m">
+				  		<label class="form-check-label" for="radio3"><strong>Prossimi 30 giorni</strong></label>
+					</div>
+					<div class="form-check col-sm-2">
+				  		<input class="form-check-input" type="radio"  name="date" id="radio4" value="6m">
+				  		<label class="form-check-label" for="radio4"><strong>Prossimi 6 mesi</strong></label>
+					</div>
+    			</div>
+	    		 -->
+	    		<div class="form-group">
+	    			<a  class=" btn btn-primary btn-rounded mb-2" style="color:white;" onclick="loadAllEvents();">Cerca eventi</a>
+	    		</div>
+  			</form>
 		</div>
+		
+    	<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
 
-  		<a name="top" id="top">
-		<br><br>
-		<a  class=" btn btn-primary btn-rounded" onclick="countEv(); loadEv();">Cerca</a>
-	<!-- </form> -->
-</div>
-
-<br><br><br>
 <div>
 	<div style="display: inline-block; padding-right:15px;"><h1>Lista Eventi</h1></div>
 	<div style="display: inline-block;"><h3 id="counterEvents"></h3></div>
@@ -284,85 +318,23 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Custom js -->
 <script src="assets/js/main.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
-
-
-<script>
-function showNumFoundEvents(n){
-	document.getElementById("counterEvents").innerHTML= " ("+ n + " trovati)";
-}
-
-function URIConstructor(){
-	var radioData = document.getElementsByName('date');
-	var place = document.getElementsByName('comune')[0].value;
-	var range = document.getElementById("slider-value").innerHTML;
-	var interval = null;
-	
-	if (place == "") place = "all-cities";
-	for (var i = 0, length = radioData.length; i < length; i++){
-	 if (radioData[i].checked){
-	  interval = radioData[i].value;
-	  break;
-	 }
-	}
-
-  	var URI = place + "/" + range + "/" + interval;
-  	console.log(URI);
-  	return URI;
-}
-
-</script>
-
-<script>
-var numev = 1;
-
-function loadLocation(){
-
-	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
-	console.log(sessionStorage.getItem('userLocation'));
-}
-
-
-function countEv(){
-	
-	
-	$.ajax({
-	    type: 'get',
-	    url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/countEvents/' + URIConstructor(),
-	    contentType: "application/json",
-	    success: function (response) {
-	        var obj = response[0];
-	        var numP = parseInt(obj.num);
-			
-	        //mostra numero di eventi trovati
-	        showNumFoundEvents(numP);
-	        
-	        numev = Math.floor((numP / 10));
-	
-	        if(numP%10 != 0){
-	            numev = Math.floor((numP / 10)+1);
-	        }
-	        console.log("min " + Math.min(7, numev));
-	        pagin();
-	      },
-	
-	    error: function(e) {
-	      var je = JSON.parse(e.responseText);
-	       alert("ko");
-	    }
-	});
-}
-</script>
-
-
-<!--  <script src="http://esimakin.github.io/twbs-pagination/js/jquery.twbsPagination.js"></script> -->
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
+
+
+<!-- Date picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	
+<!-- Custom js - Functions -->
+<script src="assets/js/utils.js"></script> 
+	
 <script>
+$(document).ready(function(){ 
+	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
+});
+
+
 $("#slider").slider(
 {
             value:50,
@@ -375,149 +347,53 @@ $("#slider").slider(
 }
 );
 
-function printEventi(data,i){
-	var obj = data;
+$("#sliderMeteo").slider(
+		{
+            value:0,
+            min: 0,
+            max: 4,
+            step: 1,
+            slide: function( event, ui ) {
+            	var descr = "";
+            	if (ui.value == 0) descr = "Qualsiasi";
+            	if (ui.value == 1) descr = "Pioggia o migliore";
+            	if (ui.value == 2) descr = "Nuvoloso o migliore";
+            	if (ui.value == 3) descr = "Sereno o poco nuvoloso";
+            	if (ui.value == 4) descr = "Solo sereno";
+                $( "#sliderMeteo-label" ).html(descr);
+                $( "#sliderMeteo-value" ).html(ui.value);
+            }
+		}
+);
+
+
+
+
+$(function() {
+	  $('input[name="daterange"]').daterangepicker({
+	    ranges: {
+	        'Oggi': [moment(), moment()],
+	        'Prossimi 7 giorni': [moment(), moment().add(7, 'days')],
+	        'Prossimo mese': [moment(), moment().add(30, 'days')],
+	        'Prossimi 6 mesi': [moment(), moment().add(6,'months')],
+	    },
+		minDate:moment(),
+		startDate: moment(),
+		endDate: moment().add(7,'days'),
+		"maxSpan": {
+	        "months": 6
+	    },
+		locale: {
+		      format: 'DD/MM/YYYY'
+		}
+	  }, function(start, end, label) {
+	    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+	    start_date = start.format('YYYY-MM-DD');
+	    end_date = end.format('YYYY-MM-DD');
+	  });
+	});
+
 	
-	var dat = new Date(obj.data_da);
-    var dat_a = new Date(obj.data_a);
-    var da = dat.getDate()  + "/" + (dat.getMonth()+1) + "/" + dat.getFullYear();
-    var a = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
-    
-    var distanza = "";
-    if (obj.distanza != null) distanza = "<div class='distance'><strong style='color: black;'>Distanza: </strong><span> circa "+obj.distanza+" km </span></div>";
-    
-    var date = "";
-    if (da == a) date = "<div class='event_date'> <span style='color:black'>Data</span>: "+da+"</div>";
-    else date = "<div class='event_date'> <span style='color:black'>Dal</span>: "+da+" <span style='color:black'>al</span> "+a+"</div>"; 
-    	
-    $("#eventiContainer").html($("#eventiContainer").html()+"<a name ='anchor_"+i+"' id ='anchor_"+i+"'/> <div class='event_box'><div class='event_info'><div class='event_title' style='font-size:16px'>"+obj.titolo+"</div> <div class='speakers'><strong>Luogo: </strong><span> "+obj.comune+" --- <b>"+obj.posto_nome+"</b></span></div>" + distanza + date + "<div class='sliderb' style='border:1px solid;padding:10px' id='event"+i+"'>"+obj.descrizione+"</div><div class='slider_menu' id='slider_menu_"+i+"'></div></div></div>");
-}
-
-	function loadEv( ) {
-    $.ajax({
-        type: 'get',
-        url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/' + URIConstructor()+ '/0',
-        contentType: "application/json",
-        success: function (response) {
-          $("#eventiContainer").html("");
-          for (var i = 0; i < Math.min(10, response.length); i++){
-            //var obj = response[i];
-            printEventi(response[i],i);
-          }
-          setMore();
-        },
-        error: function(e) {
-          var je = JSON.parse(e.responseText);
-           alert("ko");
-        }
-    });
-
-
-};
-
-function changePageEv(page) {
-  $.ajax({
-      type: 'get',
-      url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvents/' + URIConstructor()+ '/'+((page*10)-10),
-      contentType: "application/json",
-      success: function (response) {
-          $("#eventiContainer").html("");
-        for (var i = 0; i < 10; i++){
-        	printEventi(response[i],i);
-        }
-        setMore();
-      },
-      error: function(e) {
-        var je = JSON.parse(e.responseText);
-         alert("ko");
-      }
-  });
-
-
-};
-
-var sliderHeight = "100px";
-
-function setMore(){
-  var i = 0;
-    $('.sliderb').each(function () {
-                var current = $(this);
-                current.attr("box_h", current.height()+50);
-                current.css("overflow", "hidden");
-                current.css("height", sliderHeight);
-                $("#slider_menu_"+i).html('<span>Read More</span>');
-                $("#slider_menu_"+i+" span").attr("onclick","openSlider("+i+");");
-                  i = i+ 1;
-            });
-            var url = location.href;               //Save down the URL without hash.
-            location.href = "#top";                 //Go to the target element.
-            history.replaceState(null,null,url);
-
-
-}
-
-function openSlider(i){
-    var open_height = $("#event"+i).attr("box_h") + "px";
-
-    $("#event"+i).animate({"height": open_height}, {duration: "slow" });
-    $("#slider_menu_"+i).html('<span>Close</span>');
-    $("#slider_menu_"+i+" span").attr("onclick","closeSlider("+i+");");
-}
-
-function closeSlider( i){
-    $("#event"+i).animate({"height": sliderHeight}, {duration: "slow" });
-    $("#slider_menu_"+i).html('<span>Read More</span>');
-    $("#slider_menu_"+i+" span").attr("onclick","openSlider("+i+");");
-    var url = location.href;               //Save down the URL without hash.
-    location.href = "#anchor_"+i;                 //Go to the target element.
-    history.replaceState(null,null,url);
-    window.scrollTo(window.scrollX, window.scrollY - 100);
-}
-
-function pagin(){
-$('#pagination-demo').twbsPagination({
-        totalPages: numev,
-        visiblePages: 7,
-        onPageClick: function (event, page) {
-            $('#page-content').text('Page ' + page);
-            changePageEv(page);
-
-
-        }
-    });
-  }
-
-  $(function() {
-             $( "#comune" ).autocomplete({
-                 source: function( request, response ) {
-                     $.ajax({
-                       type: 'get',
-                       url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
-                       contentType: "application/json",
-                         success: function( data ) {
-                             response( data );
-                         }
-
-                     });
-                 },
-             });
-
-             $( "#nome" ).autocomplete({
-                                 source: function( request, response ) {
-                                     $.ajax({
-                                       type: 'get',
-                                       url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
-                                       contentType: "application/json",
-                                         success: function( data ) {
-                                             response( data );
-                                         }
-
-                                     });
-                                 },
-                             });
-
-
-         });
 
 
 </script>
