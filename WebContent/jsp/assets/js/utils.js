@@ -2,6 +2,7 @@
 var numev = 1;
 var sliderHeight = "100px";
 var allEvents = null;
+var allPlaces = null;
 
 var start_date = moment().format('YYYY-MM-DD');
 var end_date = moment().add(7,'days').format('YYYY-MM-DD');
@@ -15,8 +16,6 @@ function printCellEvento(containerId, indiceEvento, cellId, titolo, linkEvento, 
 			"<span style='font-size:24px; color:red;'>"+indiceEvento+".</span>&nbsp;&nbsp;&nbsp;<a href='"+ linkEvento +"' target=_'blank'>"+titolo+"</a></div> " +
 			"<div class='speakers'><strong>Luogo: </strong><span> " + comune + "<a href='"+ linkPosto +"' target=_'blank'><b>"+posto+"</b></a></span></div>"
 			+ distanza + data + meteo + tags +
-			//"<div class='sliderb' style='border:1px solid;padding:10px' id='event"+cellId+"'>"+descrizione+"</div>" +
-			//"<div class='slider_menu' id='slider_menu_"+cellId+"'></div></div></div>";
 			"<div><a data-toggle='collapse' data-target='#readMore"+cellId+"' aria-expanded='false' aria-controls='readMore"+cellId+"' style='text-decoration:underline; color:#f50136;''/><b>Leggi tutto &#187;</b></a></div>"+
 			"<div class='collapse' id='readMore"+cellId+"'><div class ='card card-body'>" + descrizione + "</div>";
 }
@@ -90,38 +89,146 @@ function printEventi(data,i, cellOffset, container){
 }
 
 
-function pagin(){
+function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, indirizzo, contatti, tipo, distanza, tags, eventiProgrammati){
+	document.getElementById(containerId).innerHTML = 	document.getElementById(containerId).innerHTML + "<div class='col-sm-6'>" + 
+	"<a name ='anchor_"+cellId+"' id ='anchor_"+cellId+"'/></a>" +
+	" <div class='event_box'><div class='event_info'>" +
+	"<div class='event_title' style='font-size:16px'>" +
+	"<span style='font-size:24px; color:red;'>"+indicePlace+".</span>&nbsp;&nbsp;&nbsp;<a href='"+ link +"' target=_'blank' rel='noopener noreferrer'>"+nome+"</a></div> " +
+	"<div class='speakers'><span> " + comune + "<b>"+tipo+"</b></span></div>"+ distanza + contatti + tags + eventiProgrammati + "</div>";	
+	//+ contatti; // tags + eventiProgrammati 
+	
+}
+
+
+
+
+function printPlaces(data,i, cellOffset, container){
+	var obj = data;
+
+    var distanza = "";
+    if (obj.distanza != null && obj.distanza != ''){
+    	distanza = "<div class='event_distance'><strong style='color: black;'>Distanza: </strong><span> circa "+parseInt(obj.distanza)+" km";
+    	if(obj.centro_distanza != null && obj.centro_distanza != '') 
+    		distanza = distanza + " da " + obj.centro_distanza;
+    	distanza = distanza + "</span></div>";	
+    }
+    
+    var tags = "";
+    if (obj.tags != null && obj.tags.length > 0){
+    	tags = "<div class='event_tags'><span style='color:black'>Tags: </span>";
+    	obj.tags.forEach(function(x, i, arr){ 
+    		tags = tags + x; 
+    		if (i < arr.length - 1) tags = tags + ", ";
+    		});
+    	tags = tags + "</div>";
+    }
+    	
+    var comune = obj.location;
+    if (obj.tipo != "") comune = comune + " | ";
+        
+    contatti = "<div class='event_date'><span style='color:black'>Contatti: </span>" + obj.telefono; 
+    if (obj.sitoweb !="") contatti = contatti + "<span style='color:black'> | </span>" + "<a href='" + obj.sitoweb + "' target = '_blank' rel='noopener noreferrer'/>sito web &#187;</a>" ;
+    contatti = contatti + "</div>";
+	
+    eventiProgrammati = "";
+    console.log("BEFORE length: " + obj.eventi_programmati.length );
+    if(obj.eventi_programmati.length > 0){
+    	console.log("length: " + obj.eventi_programmati.length );
+    	eventiProgrammati = "<div><a data-toggle='collapse' data-target='#readEvents"+cellOffset+"' aria-expanded='false' aria-controls='readEvents"+cellOffset+"' style='text-decoration:underline; color:#f50136;'/><b>Eventi programmati &#187;</b></a></div>"+
+    	"<div class='collapse' id='readEvents"+cellOffset+"'><div class ='card card-body'><ul class='list-group list-group-flush'>";
+    	var z;
+		for ( z = 0; z < obj.eventi_programmati.length; z++){
+			var dat_da = new Date(obj.eventi_programmati[z].data_da);
+		    var dat_a = new Date(obj.eventi_programmati[z].data_a);
+		    var dataInizio = dat_da.getDate()  + "/" + (dat_da.getMonth()+1) + "/" + dat_da.getFullYear();
+		    var dataFine = dat_a.getDate()  + "/" + (dat_a.getMonth()+1) + "/" + dat_a.getFullYear();
+			
+		    eventiProgrammati = eventiProgrammati + "<li class='list-group-item'><a href='"+obj.eventi_programmati[z].link+"' target='_blank' style='text-decoration:underline;'><b>"+ obj.eventi_programmati[z].titolo+"</b></a><br>";
+			if(dataInizio == dataFine)
+				eventiProgrammati = eventiProgrammati + "Data: "+ dataInizio + "</li>";
+			else
+				eventiProgrammati = eventiProgrammati + "Dal: "+ dataInizio + " al: " + dataFine + "</li>";
+			
+		}
+    	
+    	eventiProgrammati = eventiProgrammati + "</ul></div>";
+    }
+    
+    
+    
+    printCellPlace(container, i+1, cellOffset, obj.name, obj.link, comune, obj.indirizzo, contatti, obj.tipo, distanza, tags, eventiProgrammati);
+}
+
+function pagin(tipo){
 $('#pagination-demo').twbsPagination({
         totalPages: numev,
         visiblePages: 7,
         onPageClick: function (event, page) {
             $('#page-content').text('Page ' + page);
-            loadPageEvents(page);
+            if (tipo == 0)loadPageEvents(page);
+            else loadPagePlaces(page);
+            
 
 
         }
     });
   }
 
-function makePages(){
-	var numP = parseInt(allEvents.length);
+function makePages(len, tipo){
+	var numP = parseInt(len);
 	numev = Math.floor((numP / 10));
+	console.log("len: " + len + " pages: " + numev);
     if(numP%10 != 0){
         numev = Math.floor((numP / 10)+1);
     }
-    pagin();
+    pagin(tipo);
 }
 
-/*function showNumFoundEvents(n){
-	document.getElementById("counterEvents").innerHTML= " ("+ n + " trovati)";
-}*/
 
 
-/*function loadLocation(){
-	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
-}*/
 
 
+function loadAllPlaces(){
+	var onlyPlacesWithEvents = 0;
+	if (document.getElementById("checkPlacesWithEvents").checked) onlyPlacesWithEvents = 1;
+	
+    $.ajax({
+        type: 'post',
+        url: 'http://127.0.0.1:8000/api/getAllPlaces/',
+        data:{
+        	'location':document.getElementsByName('comune')[0].value,
+        	'range':document.getElementById("slider-value").innerHTML,
+        	'only-with-events': onlyPlacesWithEvents
+        },
+        success: function (response) {
+        	allPlaces = response;
+        	makePages(allPlaces.length, 1);
+        	document.getElementById("counterPlaces").innerHTML= " ("+ allPlaces.length + " trovati)";
+        	loadPagePlaces(1);
+        	
+        },
+        error: function(e) {
+          var je = JSON.parse(e.responseText);
+           alert("ko");
+        }
+    });
+}
+
+function loadPagePlaces(page){
+	var placeColumns = 2;
+	var elements = 20;
+	var pageOffset =  ((page*elements)-elements);
+	$("#placesContainer").html("");
+	var row = 0;
+	for (var i = pageOffset; i < Math.min((page*elements), allPlaces.length); i++){
+		if (i % placeColumns == 0){
+			document.getElementById('placesContainer').innerHTML =   document.getElementById('placesContainer').innerHTML + "<div class = 'row' id='placerow" + parseInt(i/placeColumns) + "'></div>";
+		}
+		console.log("inserting in " + "placerow"+parseInt(i/placeColumns));
+        printPlaces(allPlaces[i],i, i, "placerow"+parseInt(i/placeColumns));
+      }
+}
 
 
 
@@ -144,7 +251,7 @@ function loadAllEvents() {
         },
         success: function (response) {
         	allEvents = response;
-        	makePages();
+        	makePages(allEvents.length, 0);
         	document.getElementById("counterEvents").innerHTML= " ("+ allEvents.length + " trovati)";
         	loadPageEvents(1);
         	
@@ -154,7 +261,7 @@ function loadAllEvents() {
            alert("ko");
         }
     });
-};
+}
 
 function loadPageEvents(page){
 	var pageOffset =  ((page*10)-10);
@@ -162,7 +269,6 @@ function loadPageEvents(page){
 	for (var i = pageOffset; i < Math.min((page*10), allEvents.length); i++){
         printEventi(allEvents[i],i, i, "eventiContainer");
       }
-      //setMore();
 }
 
 function createPayloadData(topicData){	
@@ -354,4 +460,13 @@ function closeSlider( i){
     history.replaceState(null,null,url);
     window.scrollTo(window.scrollX, window.scrollY - 100);
     $("#event"+i).css("display", "none");
+}*/
+
+/*function showNumFoundEvents(n){
+document.getElementById("counterEvents").innerHTML= " ("+ n + " trovati)";
+}*/
+
+
+/*function loadLocation(){
+document.getElementById("comune").value = sessionStorage.getItem('userLocation');
 }*/
