@@ -28,9 +28,9 @@
     <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     
-    
+    <link href="assets/css/spinner.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
 </head>
@@ -154,11 +154,12 @@
 		</div>
 		
     	<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
+    	<div id ="waiting"></div>
 
-<div>
-	<div style="display: inline-block; padding-right:15px;"><h1>Eventi</h1></div>
+
+	<div style="display: inline-block; padding-right:15px;" id="listPlaceholder"><h1>Eventi</h1></div>
 	<div style="display: inline-block;"><h3 id="counterEvents"></h3></div>
-</div>
+
 
 <div id ="eventiContainer" name ="eventiContainer">
 </div>

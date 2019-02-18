@@ -190,6 +190,10 @@ function makePages(len, tipo){
 
 
 function loadAllPlaces(){
+	document.getElementById("waiting").innerHTML ='<div style="text-align:center;"><div class="lds-dual-ring"></div><div><h5>Recupero dati in corso..</h5></div></div>';
+	document.getElementById("placesContainer").innerHTML ="";
+	document.getElementById("listPlaceholder").innerHTML ="";
+	document.getElementById("counterPlaces").innerHTML =""
 	var onlyPlacesWithEvents = 0;
 	if (document.getElementById("checkPlacesWithEvents").checked) onlyPlacesWithEvents = 1;
 	
@@ -203,7 +207,9 @@ function loadAllPlaces(){
         },
         success: function (response) {
         	allPlaces = response;
+        	document.getElementById("waiting").innerHTML = "";
         	makePages(allPlaces.length, 1);
+        	document.getElementById("listPlaceholder").innerHTML= "<h1>Punti di interesse </h1>";
         	document.getElementById("counterPlaces").innerHTML= " ("+ allPlaces.length + " trovati)";
         	loadPagePlaces(1);
         	
@@ -234,6 +240,10 @@ function loadPagePlaces(page){
 
 
 function loadAllEvents() {
+	document.getElementById("waiting").innerHTML ='<div style="text-align:center;"><div class="lds-dual-ring"></div><div><h5>Recupero dati in corso..</h5></div></div>';
+	document.getElementById("eventiContainer").innerHTML ="";
+	document.getElementById("listPlaceholder").innerHTML ="";
+	document.getElementById("counterEvents").innerHTML =""
 	var noWeatherData = 0;
 	if (document.getElementById("checkNoMeteoData").checked) noWeatherData = 1;
 	
@@ -251,7 +261,9 @@ function loadAllEvents() {
         },
         success: function (response) {
         	allEvents = response;
+        	document.getElementById("waiting").innerHTML = "";
         	makePages(allEvents.length, 0);
+        	document.getElementById("listPlaceholder").innerHTML= "<h1>Eventi </h1>";
         	document.getElementById("counterEvents").innerHTML= " ("+ allEvents.length + " trovati)";
         	loadPageEvents(1);
         	
