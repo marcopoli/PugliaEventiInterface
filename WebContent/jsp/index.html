@@ -543,6 +543,7 @@ $("#login").submit(function(e) {
                 var email = document.getElementById('email').value;
                 $.ajax({
                     type: 'post',
+                    crossDomain: true,
                     url: 'http://90.147.102.243:5000/auth/login',
                     data: json,
                     contentType: "application/json",
@@ -558,6 +559,7 @@ $("#login").submit(function(e) {
                       
                       $.ajax({	//////////// Python call to get user location
 		  		        	type: 'post',
+		  		        	crossDomain: true,
 		  		          	url: 'http://127.0.0.1:8000/GetUserLocation/',
 		  		          	//contentType: "application/json",
 		  		          	data: {"username": response.username},
@@ -592,6 +594,7 @@ $("#login").submit(function(e) {
 
                         $.ajax({
                             type: 'post',
+                            crossDomain: true,
                             url: 'http://90.147.102.243:5000/auth/signup',
                             data: json,
                             contentType: "application/json",
