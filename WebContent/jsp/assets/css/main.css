@@ -1887,9 +1887,9 @@ footer .newsletter_form /*.form-control*/ {
           box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 */
-.btn-sm {
+/*.btn-sm {
   padding: 10px 20px;
-}
+}*/
 
 .btn-lg {
   padding: 18px 50px;
@@ -2623,6 +2623,18 @@ Cover
   font-weight: 700;
 }
 
+.btn-val{
+	font-size: 11px;
+	font-weight: 500;
+}
+
+.btn-val:hover {
+	background-color:black;
+	border-color:black;
+	cursor: pointer;
+	-webkit-transition: all ease-in-out 0.4s;
+  	transition: all ease-in-out 0.4s;
+	}
 
 .event_box .readmore_btn {
   margin-top: 25px;

@@ -87,28 +87,66 @@ function printEventi(data,i, cellOffset, container){
 }
 
 
+function createPlaceModal(placeId, placeName){
+	
+	placeModal =	'<div class="modal fade" id="placeModal'+placeId+'" tabindex="-1" role="dialog" aria-labelledby="placeModalLabel'+placeId+'" aria-hidden="true">'
+					+'<div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header">'
+					+'<h5 class="modal-title" id="placeModalLabel'+placeId+'">Aggiungi '+placeName+'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>'
+					+'</button></div><div class="form" id="placeEvalForm" method="post" enctype="multipart/form-data"><div class="modal-body">'
+					
+					+'<span><b>Seleziona la compagnia e lo stato emotivo in cui ti trovavi quando hai visitato questo posto</b></span>'
+					
+					+'<div class="form-group form-inline">'
+					
+					+'<input type="hidden" id="placeEvalId" value='+placeId+'>'
+					+'<div><select class="form-control " id="emotionEval'+placeId+'">'
+					+'<option value="joyful">Felice</option><option value ="sad">Triste</option><option value="angry">Arrabbiato</option></select></div>'
+					+'<div><select class="form-control" id="companionshipEval'+placeId+'">'
+					+'<option value="withFriends">In compagnia</option><option value="alone">Solo</option></select></div></div>'
+					
+					+'<small class="form-text text-muted"><i>Aggiungendo questo luogo alla tua lista dei posti visitati riceverai suggerimenti più accurati!</i></small>'
+				
+					+'</div><div class="modal-footer"><button type="button" class="btn btn-primary" onclick="sendEval('+placeId+');" data-dismiss="modal">Conferma</button>'
+					+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+					
+					+'</div></form></div></div></div>';
+	return placeModal;
+}
+
+function sendEval(placeId){
+	console.log("username: "+ sessionStorage.getItem('userPugliaEvent')+"  placeId: " + placeId + "  emotion: " + document.getElementById("emotionEval" + placeId).value + "  comp: " + document.getElementById("companionshipEval" + placeId).value);
+	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';
+}
 
 
-
-
-
-
-
-
-function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, indirizzo, contatti, tipo, distanza, tags, eventiProgrammati){
+function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, indirizzo, contatti, tipo, distanza, tags, eventiProgrammati, buttonEvaluated, placeModal){
 	document.getElementById(containerId).innerHTML = 	document.getElementById(containerId).innerHTML + "<div class='col-sm-6'>" + 
 	"<a name ='anchor_"+cellId+"' id ='anchor_"+cellId+"'/></a>" +
 	" <div class='event_box'><div class='event_info'>" +
 	"<div class='event_title' style='font-size:16px'>" +
-	"<span style='font-size:24px; color:red;'>"+indicePlace+".</span>&nbsp;&nbsp;&nbsp;<a href='"+ link +"' target=_'blank' rel='noopener noreferrer'>"+nome+"</a></div> " +
-	"<div class='speakers'><span> " + comune + "<b>"+tipo+"</b></span></div>"+ distanza + contatti + tags + eventiProgrammati + "</div>";	
-	//+ contatti; // tags + eventiProgrammati 
-	
+	"<span style='font-size:24px; color:red;'>"+indicePlace+".</span>&nbsp;&nbsp;&nbsp;<a href='"+ link +"' target=_'blank' rel='noopener noreferrer'>"+nome+"</a>"+ buttonEvaluated + "</div>" +
+	"<div class='speakers'><span> " + comune + "<b>"+tipo+"</b></span></div>"+ distanza + contatti + tags + eventiProgrammati + "</div>"+placeModal;		
 }
+
+
+
+
 
 function printPlaces(data,i, cellOffset, container){
 	var obj = data;
 
+	var buttonEvaluated = "";
+	var placeModal="";
+	console.log("b " + obj.valutato);
+	if(obj.valutato){
+		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span></span>';
+	}
+	else {
+		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><button type="button" class="btn-val btn btn-danger btn-sm" data-toggle="modal" data-target="#placeModal'+obj.placeId+'"><i class="fa fa-plus"></i></button></span>';
+		placeModal = createPlaceModal(obj.placeId, obj.name);
+	}
+	
+	
     var distanza = "";
     if (obj.distanza != null && obj.distanza != ''){
     	distanza = "<div class='event_distance'><strong style='color: black;'>Distanza: </strong><span> circa "+parseInt(obj.distanza)+" km";
@@ -135,9 +173,7 @@ function printPlaces(data,i, cellOffset, container){
     contatti = contatti + "</div>";
 	
     eventiProgrammati = "";
-    console.log("BEFORE length: " + obj.eventi_programmati.length );
     if(obj.eventi_programmati.length > 0){
-    	console.log("length: " + obj.eventi_programmati.length );
     	eventiProgrammati = "<div><a data-toggle='collapse' data-target='#readEvents"+cellOffset+"' aria-expanded='false' aria-controls='readEvents"+cellOffset+"' style='text-decoration:underline; color:#f50136;'/><b>Eventi programmati &#187;</b></a></div>"+
     	"<div class='collapse' id='readEvents"+cellOffset+"'><div class ='card card-body'><ul class='list-group list-group-flush'>";
     	var z;
@@ -158,7 +194,7 @@ function printPlaces(data,i, cellOffset, container){
     	eventiProgrammati = eventiProgrammati + "</ul></div>";
     }
        
-    printCellPlace(container, i+1, cellOffset, obj.name, obj.link, comune, obj.indirizzo, contatti, obj.tipo, distanza, tags, eventiProgrammati);
+    printCellPlace(container, i+1, cellOffset, obj.name, obj.link, comune, obj.indirizzo, contatti, obj.tipo, distanza, tags, eventiProgrammati, buttonEvaluated, placeModal);
 }
 
 
@@ -191,7 +227,7 @@ $('#pagination-demo').twbsPagination({
 function makePages(len, tipo){
 	var numP = parseInt(len);
 	numev = Math.floor((numP / 10));
-	console.log("len: " + len + " pages: " + numev);
+	//console.log("len: " + len + " pages: " + numev);
     if(numP%10 != 0){
         numev = Math.floor((numP / 10)+1);
     }
@@ -223,6 +259,7 @@ $(function() {
 		source: function( request, response ) {
 			$.ajax({
 				type: 'get',
+				crossDomain: true,
 				url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
 				contentType: "application/json",
                 success: function( data ) {
@@ -240,6 +277,7 @@ $(function() {
     	source: function( request, response ) {
     		$.ajax({
     			type: 'get',
+    			crossDomain: true,
                 url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
                 contentType: "application/json",
                 success: function( data ) {

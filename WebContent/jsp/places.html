@@ -276,6 +276,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="assets/js/popper.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/waypoints.min.js"></script>
+
+
 <!--slick carousel -->
 <script src="assets/js/owl.carousel.min.js"></script>
 <!--parallax -->
@@ -293,6 +295,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
 
 
+
 <!-- Date picker -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -303,6 +306,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script>
 $(document).ready(function(){ 
 	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
+	$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
 });
 
 
@@ -331,6 +336,7 @@ function loadAllPlaces(){
         type: 'post',
         url: 'http://127.0.0.1:8000/api/getAllPlaces/',
         data:{
+        	'username': sessionStorage.getItem('userPugliaEvent'),
         	'location':document.getElementsByName('comune')[0].value,
         	'range':document.getElementById("slider-value").innerHTML,
         	'only-with-events': onlyPlacesWithEvents
@@ -361,10 +367,10 @@ function loadPagePlaces(page){
 		if (i % placeColumns == 0){
 			document.getElementById('placesContainer').innerHTML =   document.getElementById('placesContainer').innerHTML + "<div class = 'row' id='placerow" + parseInt(i/placeColumns) + "'></div>";
 		}
-		console.log("inserting in " + "placerow"+parseInt(i/placeColumns));
         printPlaces(allPlaces[i],i, i, "placerow"+parseInt(i/placeColumns));
       }
 }
+
 
 </script>
 
