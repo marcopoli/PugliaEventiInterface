@@ -113,8 +113,26 @@ function createPlaceModal(placeId, placeName){
 	return placeModal;
 }
 
-function sendEval(placeId){
-	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';
+function sendEval(placeId){	
+    $.ajax({
+        type: 'post',
+        url: 'http://127.0.0.1:8000/api/addRating/',
+        data:{
+        	'username': sessionStorage.getItem('userPugliaEvent'),
+        	'place-id':placeId,
+        	"emotion":document.getElementById("emotionEval"+placeId).value,
+        	"companionship":document.getElementById("companionshipEval"+placeId).value
+        },
+        success: function (response) {
+        	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';	
+        	console.log("rating added to " + placeId);
+        },
+        error: function(e) {
+          var je = JSON.parse(e.responseText);
+           alert("ko");
+        }
+    });
+
 }
 
 
