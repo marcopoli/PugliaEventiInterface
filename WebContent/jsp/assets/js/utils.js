@@ -114,7 +114,6 @@ function createPlaceModal(placeId, placeName){
 }
 
 function sendEval(placeId){
-	console.log("username: "+ sessionStorage.getItem('userPugliaEvent')+"  placeId: " + placeId + "  emotion: " + document.getElementById("emotionEval" + placeId).value + "  comp: " + document.getElementById("companionshipEval" + placeId).value);
 	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';
 }
 
@@ -127,7 +126,6 @@ function printCellPlace(containerId, indicePlace, cellId, nome, link, comune, in
 	"<span style='font-size:24px; color:red;'>"+indicePlace+".</span>&nbsp;&nbsp;&nbsp;<a href='"+ link +"' target=_'blank' rel='noopener noreferrer'>"+nome+"</a>"+ buttonEvaluated + "</div>" +
 	"<div class='speakers'><span> " + comune + "<b>"+tipo+"</b></span></div>"+ distanza + contatti + tags + eventiProgrammati + "</div>"+placeModal;		
 }
-
 
 
 

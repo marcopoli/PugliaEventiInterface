@@ -110,13 +110,17 @@
 					<label for="comune" class="col-sm-2 col-form-label">Città in cui cercare </label>
 					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune" /></div>
 				</div>
-				<div class="form-group form-inline">
+				<!--  <div class="form-group form-inline">
 					<label for="slider" class="col-sm-2 col-form-label">Raggio di ricerca </label>
 					<div class="col-sm-4"><span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="slider-value">10</span>&nbsp;km</strong></div>
-				</div>
+				</div> -->
 				<div class="form-group form-inline">
   					<label class="form-check-label col-sm-4" for="checkPlacesWithEvents">Mostra solo le location con eventi programmati</label>
   					<input class="form-check-input" type="checkbox" value="" id="checkPlacesWithEvents">	
+				</div>
+				<div class="form-group form-inline">
+  					<label class="form-check-label col-sm-4" for="checkOnlyRatedPlaces">Mostra solo le location già visitate</label>
+  					<input class="form-check-input" type="checkbox" value="" id="checkOnlyRatedPlaces">	
 				</div>
 	    		<div class="form-group">
 	    			<a  class=" btn btn-primary btn-rounded mb-2" style="color:white;" onclick="loadAllPlaces();">Cerca locations</a>
@@ -330,7 +334,9 @@ function loadAllPlaces(){
 	document.getElementById("listPlaceholder").innerHTML ="";
 	document.getElementById("counterPlaces").innerHTML =""
 	var onlyPlacesWithEvents = 0;
+	var onlyRatedPlaces = 0;
 	if (document.getElementById("checkPlacesWithEvents").checked) onlyPlacesWithEvents = 1;
+	if (document.getElementById("checkOnlyRatedPlaces").checked) onlyRatedPlaces = 1;
 	
     $.ajax({
         type: 'post',
@@ -338,8 +344,10 @@ function loadAllPlaces(){
         data:{
         	'username': sessionStorage.getItem('userPugliaEvent'),
         	'location':document.getElementsByName('comune')[0].value,
-        	'range':document.getElementById("slider-value").innerHTML,
-        	'only-with-events': onlyPlacesWithEvents
+        	//'range':document.getElementById("slider-value").innerHTML,
+        	'range':0,
+        	'only-with-events': onlyPlacesWithEvents,
+        	'only-rated-places': onlyRatedPlaces
         },
         success: function (response) {
         	allPlaces = response;
@@ -370,6 +378,18 @@ function loadPagePlaces(page){
         printPlaces(allPlaces[i],i, i, "placerow"+parseInt(i/placeColumns));
       }
 }
+
+$('input[id=checkOnlyRatedPlaces]').change(function(){
+    if($(this).is(':checked')) {
+    	$('input[id=comune]').prop('disabled', true);
+    	$('input[id=checkPlacesWithEvents]').prop('disabled', true);
+    	$('input[id=checkPlacesWithEvents]').prop('checked', false);
+    } else {
+    	console.log("is unchecked");
+    	$('input[id=comune]').prop('disabled', false);
+    	$('input[id=checkPlacesWithEvents]').prop('disabled', false);
+    }
+});
 
 
 </script>
