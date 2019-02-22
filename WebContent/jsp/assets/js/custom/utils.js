@@ -310,13 +310,26 @@ $(function() {
             }
         },
     });
-    $( "#nome" ).autocomplete({
+    $( "#nomeEvento" ).autocomplete({
     	source: function( request, response ) {
     		$.ajax({
     			type: 'get',
     			crossDomain: true,
                 //url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
     			url: DJANGO_API_ADDR + 'getEventi/'+request.term,
+                contentType: "application/json",
+                success: function( data ) {
+                	response( data );
+                }
+    		});
+    	},
+    });
+    $( "#nomeLuogo" ).autocomplete({
+    	source: function( request, response ) {
+    		$.ajax({
+    			type: 'get',
+    			crossDomain: true,
+    			url: DJANGO_API_ADDR + 'getLuoghi/'+request.term,
                 contentType: "application/json",
                 success: function( data ) {
                 	response( data );
