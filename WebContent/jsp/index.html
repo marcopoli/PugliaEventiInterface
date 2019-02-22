@@ -572,22 +572,19 @@ $("#login").submit(function(e) {
 		                        $("#loginRes").text("Success!");
 		  	         			var loc = response.user_location;
 		  	         			sessionStorage.setItem('userLocation', loc);
-			                    document.location.href = "profile.html";  	                
+		  	         			getData();
+			                    	                
 		  	             	},
 		                    error: function(e) { //Python backend error
 		                    	$("#loginRes").text("Errore di connessione al backend server. Contattare l'amministratore.");
-		                        $("#loginSpinner").toggleClass('d-none');
-		            			$("#loginForm").toggleClass('d-none');
-		            			$("#loginFooter").toggleClass('d-none');
+		                        $("#loginSpinner").toggleClass('d-none'); $("#loginForm").toggleClass('d-none'); $("#loginFooter").toggleClass('d-none');
 		                    }
 		  		    		}) //close python    	           
                     },
                     error: function(e) { //Myrror error
                       var je = JSON.parse(e.responseText);
                        $("#loginRes").text(je.message);
-                       $("#loginSpinner").toggleClass('d-none');
-           			   $("#loginForm").toggleClass('d-none');
-           				$("#loginFooter").toggleClass('d-none');
+                       $("#loginSpinner").toggleClass('d-none'); $("#loginForm").toggleClass('d-none'); $("#loginFooter").toggleClass('d-none');
                     }
                 });
         });
@@ -626,32 +623,55 @@ $("#login").submit(function(e) {
   								//success
   								$("#signupRes").text("Success!");
   			  	         		sessionStorage.setItem('userLocation', comune);
+  			  	         		getData();
   			  	         		document.location.href = "profile.html";  
   			  	             }, 
                              error: function(e) {//python backend error
                                   $("#signupRes").text("Errore di connessione al backend server. Contattare l'amministratore.");
-                                  $("#iscrSpinner").toggleClass('d-none');
-                      				$("#iscrForm").toggleClass('d-none');
-                      				$("#iscrFooter").toggleClass('d-none');
+                                  $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
                              }
   			  		    	}) //close python
                             }, 
                             error: function(e) {//Myrror error
                               var je = JSON.parse(e.responseText);
                                $("#signupRes").text(je.message);
-                               $("#iscrSpinner").toggleClass('d-none');
-                   				$("#iscrForm").toggleClass('d-none');
-                   				$("#iscrFooter").toggleClass('d-none');
+                               $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
                             }
                         });
                       }else{ //form error
                         $("#signupRes").text("Errore di iscrizione. Ricontrollare i dati.");
-                        $("#iscrSpinner").toggleClass('d-none');
-            			$("#iscrForm").toggleClass('d-none');
-            			$("#iscrFooter").toggleClass('d-none');
+                        $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
                       }
 
                 });
+        
+        
+        
+function getData(){
+	var obj={};
+	obj["username"] = sessionStorage.getItem('userPugliaEvent');
+	var json = JSON.stringify(obj)
+	$.ajax({
+		 type: 'post',
+		 crossDomain: true,
+	     url: MYRROR_API_ADDR+'api/user',
+	     contentType: "application/json",
+	     data: json,
+	     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+	     success: function (response) {
+	    	 sessionStorage.setItem('userData', JSON.stringify(response));
+	    	 document.location.href = "profile.html";  
+	    	 
+	     },
+	     error: function(e) {
+	    	 var je = JSON.parse(e.responseText);
+             $("#signupRes").text(je.message);
+             $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
+	     }
+	});
+	
+	
+}
         
 </script>
 </body>
