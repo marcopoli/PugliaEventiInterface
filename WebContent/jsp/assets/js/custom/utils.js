@@ -286,8 +286,12 @@ function createPayloadData(topicData){
 
 
 
-
-
+$( "#comune" ).autocomplete({ minLength: 0 });
+$( "#comune" ).autocomplete( "option", "minLength", 2 );
+$( "#nomeLuogo" ).autocomplete({ minLength: 0 });
+$( "#nomeLuogo" ).autocomplete( "option", "minLength", 4 );
+$( "#nomeEvento" ).autocomplete({ minLength: 0 });
+$( "#nomeEvento" ).autocomplete( "option", "minLength", 4 );
 
 
 $(function() {
@@ -336,6 +340,11 @@ $(function() {
                 }
     		});
     	},
+    	change: function (event, ui) {
+            if(!ui.item){
+                $("#nomeLuogo").val("");
+            }
+        },
     });
 });
 
