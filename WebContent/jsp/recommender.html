@@ -308,7 +308,26 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="assets/js/utils.js"></script> 
 
 <script>
-$(document).ready(function(){ 
+console.log("starting getuserconfig call...");
+$.ajax({
+    type: 'post',
+    url: 'http://127.0.0.1:8000/api/getUserConfig/',
+    data:{
+    	'username': sessionStorage.getItem('userPugliaEvent'),
+    },
+    success: function (response) {
+    	console.log("response received");
+    	firstConfigDone = response.first_config_done;
+    	if(!firstConfigDone)
+    		window.location.replace("places.html");
+    },
+    error: function(e) {
+      var je = JSON.parse(e.responseText);
+       alert("ko");
+    }
+});
+
+$(document).ready(function(){
 	document.getElementById("comune").value = sessionStorage.getItem('userLocation');	  
 });
 

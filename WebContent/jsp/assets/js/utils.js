@@ -1,4 +1,6 @@
 
+var MIN_CONTEXT_PLACES = 3;
+
 var numev = 1;
 var sliderHeight = "100px";
 var allEvents = null;
@@ -106,26 +108,35 @@ function createPlaceModal(placeId, placeName){
 					
 					+'<small class="form-text text-muted"><i>Aggiungendo questo luogo alla tua lista dei posti visitati riceverai suggerimenti più accurati!</i></small>'
 				
-					+'</div><div class="modal-footer"><button type="button" class="btn btn-primary" onclick="sendEval('+placeId+');" data-dismiss="modal">Conferma</button>'
+					+'</div><div class="modal-footer"><button type="button" class="btn btn-primary" onclick="sendSingleRating('+placeId+');" data-dismiss="modal">Conferma</button>'
 					+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
 					
 					+'</div></form></div></div></div>';
 	return placeModal;
 }
 
-function sendEval(placeId){	
+function sendEval(placeId,emotion,companionship, callback){	
+	for (var i = 0; i < allPlaces.length; i++){
+		if(allPlaces[i].placeId == placeId)
+			allPlaces[i].valutato = true;
+	}
+	
+	
     $.ajax({
         type: 'post',
         url: 'http://127.0.0.1:8000/api/addRating/',
         data:{
         	'username': sessionStorage.getItem('userPugliaEvent'),
         	'place-id':placeId,
-        	"emotion":document.getElementById("emotionEval"+placeId).value,
-        	"companionship":document.getElementById("companionshipEval"+placeId).value
+        	"emotion":emotion,
+        	"companionship":companionship
         },
         success: function (response) {
-        	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';	
+        	document.getElementById("buttonStatus" + placeId).innerHTML = '<span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span>';	
         	console.log("rating added to " + placeId);
+        	if(callback != null) {
+        		callback();
+        	}
         },
         error: function(e) {
           var je = JSON.parse(e.responseText);
@@ -133,6 +144,19 @@ function sendEval(placeId){
         }
     });
 
+}
+
+function sendSingleRating(placeId){
+	var mood = $("#emotionEval"+placeId).val(); 
+	var comp = $("#companionshipEval"+placeId).val(); 
+	sendEval(placeId,mood, comp,null);
+}
+
+function sendConfigRating(placeId){
+	if (ancoraDaInserire == 0)
+		sendEval(placeId,targetMood, targetCompanionship, window.location.reload.bind(window.location));
+	else
+		sendEval(placeId,targetMood, targetCompanionship, checkConfigIsDone);
 }
 
 
@@ -153,13 +177,15 @@ function printPlaces(data,i, cellOffset, container){
 
 	var buttonEvaluated = "";
 	var placeModal="";
-	console.log("b " + obj.valutato);
 	if(obj.valutato){
-		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span></span>';
+		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Luogo visitato"><i class="fa fa-check"></i></span></span>';
 	}
-	else {
+	else if(!isFirstConfig) {
 		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><button type="button" class="btn-val btn btn-danger btn-sm" data-toggle="modal" data-target="#placeModal'+obj.placeId+'"><i class="fa fa-plus"></i></button></span>';
 		placeModal = createPlaceModal(obj.placeId, obj.name);
+	}
+	else{
+		buttonEvaluated = '&nbsp;&nbsp;<span id="buttonStatus'+obj.placeId+'"><button type="button" class="btn-val btn btn-danger btn-sm" onClick="sendConfigRating('+obj.placeId+')"><i class="fa fa-plus"></i></button></span>';
 	}
 	
 	

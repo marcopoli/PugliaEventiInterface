@@ -101,6 +101,17 @@
 <!--events section -->
 <section class="pt100 pb100">
     <div class="container">
+    
+    	<div class="card text-white bg-danger d-none" id="firstConfigHelp">
+		  <div class="card-body">
+		    <h5 class="card-title text-white">ATTENZIONE: Effettua la tua prima configurazione del profilo!</h5>
+		    <p class="card-text text-white">Per permetterci di offrirti dei suggerimenti sugli eventi è necessario che tu ci fornisca un insieme di luoghi che hai già visitato, indicandoci
+		    anche il contesto in cui ti trovavi al momento della visita (stato emotivo e compagnia).</p>
+		    <p class="card-text text-white">Utilizza i filtri e segui le istruzioni più sotto per selezionare correttamente i luoghi.</p>
+		  </div>
+		</div>
+		<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
+    
     	<div>
   			<h5>Filtra i punti di interesse</h5>
   			<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
@@ -108,7 +119,7 @@
   			<form>
 				<div class="form-group form-inline">
 					<label for="comune" class="col-sm-2 col-form-label">Città in cui cercare </label>
-					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune" /></div>
+					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune"/></div>
 				</div>
 				<!--  <div class="form-group form-inline">
 					<label for="slider" class="col-sm-2 col-form-label">Raggio di ricerca </label>
@@ -132,8 +143,15 @@
     	<div id ="waiting"></div>
 
 
-	<div style="display: inline-block; padding-right:15px;" id="listPlaceholder"><h1>Punti di interesse</h1></div>
-	<div style="display: inline-block;"><h3 id="counterPlaces"></h3></div>
+		<div style="display: inline-block; padding-right:15px;" id="listPlaceholder"><h1>Punti di interesse</h1></div>
+		<div style="display: inline-block;"><h3 id="counterPlaces"></h3></div>
+		
+		<div class="card text-white bg-danger d-none col-sm-6 mx-auto text-center" id="placePickerHelp">
+			<div class="card-body">
+				<span class="card-text text-white">Seleziona <b><span id="nSelect"></span></b> luoghi che hai visitato nel contesto: <b><span id="targetContext"></span></b></span>		
+			</div>
+		</div>
+
 
 <div id ="placesContainer" name ="placesContainer">
 </div>
@@ -303,16 +321,142 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Date picker -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+<!-- AngularJS -->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> -->
 	
 <!-- Custom js - Functions -->
 <script src="assets/js/utils.js"></script> 
 	
 <script>
+
+var n_select = 0;
+var contextString = "";
+var isFirstConfig = false;
+var targetMood = "";
+var targetCompanionship = "";
+var ancoraDaInserire = 0;
+
+$.holdReady(true);
+checkConfigIsDone();
+
+
+
+function checkConfigIsDone(){
+$.ajax({
+    type: 'post',
+    url: 'http://127.0.0.1:8000/api/getRatings/',
+    data:{
+    	'username': sessionStorage.getItem('userPugliaEvent'),
+    },
+    success: function (response) {
+    	if (!response.first_config_done){
+    		//show first config stuff
+    		isFirstConfig = true;
+    		$("#firstConfigHelp").removeClass('d-none');
+    		$("#placePickerHelp").removeClass('d-none');
+    		placePicker(response);
+    		//callback();
+    		refreshContextLabels();
+    	}
+    	else{
+    		$("#firstConfigHelp").addClass('d-none');
+    		$("#placePickerHelp").addClass('d-none');
+    		//loadPagePlaces(page);
+    	}
+    	$.holdReady(false);	
+    },
+    error: function(e) {
+      var je = JSON.parse(e.responseText);
+       alert("ko");
+    }
+});
+}
+
+function placePicker(data){
+	nAngryAloneToSelect = MIN_CONTEXT_PLACES - data.n_angry_alone;
+	nAngryFriendsToSelect = MIN_CONTEXT_PLACES - data.n_angry_withFriends;
+	nJoyfulAloneToSelect = MIN_CONTEXT_PLACES - data.n_joyful_alone;
+	nJoyfulFriendsToSelect = MIN_CONTEXT_PLACES - data.n_joyful_withFriends;
+	nSadAloneToSelect = MIN_CONTEXT_PLACES - data.n_sad_alone;
+	nSadFriendsToSelect = MIN_CONTEXT_PLACES - data.n_sad_withFriends;
+	
+	ancoraDaInserire = nAngryAloneToSelect + nAngryFriendsToSelect + nJoyfulAloneToSelect + nJoyfulFriendsToSelect + nSadAloneToSelect + nSadFriendsToSelect;
+	
+	if (nAngryAloneToSelect > 0){
+		//document.getElementById("nSelect").innerHTMl = nAngryAloneToSelect;
+		//document.getElementById("actualContext").innerHTMl = "Arrabbiato, Da solo";
+		n_select = nAngryAloneToSelect;
+		contextString = "Arrabbiato, Da solo";
+		targetMood= "angry";
+		targetCompanionship="alone";
+		console.log("placepicker:" + contextString + "  " +n_select);
+		ancoraDaInserire--;
+		return;
+	}
+	if (nAngryFriendsToSelect > 0){
+		n_select = nAngryFriendsToSelect;
+		contextString = "Arrabbiato, In compagnia";
+		targetMood= "angry";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nJoyfulAloneToSelect > 0){
+		n_select = nJoyfulAloneToSelect;
+		contextString = "Felice, Da solo";
+		targetMood= "joyful";
+		targetCompanionship="alone";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nJoyfulFriendsToSelect > 0){
+		n_select = nJoyfulFriendsToSelect;
+		contextString = "Felice, In compagnia";
+		targetMood= "joyful";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nSadAloneToSelect > 0){
+		n_select = nSadAloneToSelect;
+		contextString = "Trieste, Da solo";
+		targetMood= "sad";
+		targetCompanionship="alone";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nSadFriendsToSelect > 0){
+		n_select = nSadFriendsToSelect;
+		contextString = "Trieste, In compagnia";
+		targetMood= "sad";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	
+	/*if(nAngryAloneToSelect <= 0 && nAngryFriendsToSelect <= 0 && nJoyfulAloneToSelect <= 0 && nJoyfulFriendsToSelect <= 0 && nSadAloneToSelect <= 0 && nSadFriendsToSelect <= 0){
+		window.location.reload();
+		
+	}*/
+	
+	
+}
+
+function refreshContextLabels(){
+	$("#targetContext").html(contextString);
+	$("#nSelect").html(n_select);
+	//console.log("print labels: " + contextString + "  " +n_select);
+}
+
+
 $(document).ready(function(){ 
 	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
 	$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+	refreshContextLabels();
 
 });
+
 
 
 $("#slider").slider(
@@ -390,7 +534,6 @@ $('input[id=checkOnlyRatedPlaces]').change(function(){
     	$('input[id=checkPlacesWithEvents]').prop('disabled', false);
     }
 });
-
 
 </script>
 
