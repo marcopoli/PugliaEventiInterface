@@ -1,10 +1,4 @@
 
-var MIN_CONTEXT_PLACES = 3;
-
-var numev = 1;
-var sliderHeight = "100px";
-var allEvents = null;
-var allPlaces = null;
 
 var start_date = moment().format('YYYY-MM-DD');
 var end_date = moment().add(7,'days').format('YYYY-MM-DD');

@@ -311,11 +311,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
-
 
 
 <!-- Date picker -->
@@ -325,8 +326,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- AngularJS -->
 <!--  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> -->
 	
-<!-- Custom js - Functions -->
-<script src="assets/js/utils.js"></script> 
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script> 
 	
 <script>
 
@@ -345,7 +347,7 @@ checkConfigIsDone();
 function checkConfigIsDone(){
 $.ajax({
     type: 'post',
-    url: 'http://127.0.0.1:8000/api/getRatings/',
+    url: DJANGO_API_ADDR+'getRatings/',
     data:{
     	'username': sessionStorage.getItem('userPugliaEvent'),
     },
@@ -484,7 +486,7 @@ function loadAllPlaces(){
 	
     $.ajax({
         type: 'post',
-        url: 'http://127.0.0.1:8000/api/getAllPlaces/',
+        url: DJANGO_API_ADDR+'getAllPlaces/',
         data:{
         	'username': sessionStorage.getItem('userPugliaEvent'),
         	'location':document.getElementsByName('comune')[0].value,

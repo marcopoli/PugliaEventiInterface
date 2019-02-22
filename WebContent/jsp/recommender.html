@@ -296,7 +296,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
@@ -305,14 +306,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-<!-- Custom js - Functions -->
-<script src="assets/js/utils.js"></script> 
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script> 
 
 <script>
 console.log("starting getuserconfig call...");
 $.ajax({
     type: 'post',
-    url: 'http://127.0.0.1:8000/api/getUserConfig/',
+    url: DJANGO_API_ADDR+'getUserConfig/',
     data:{
     	'username': sessionStorage.getItem('userPugliaEvent'),
     },
@@ -377,10 +379,10 @@ $("#sliderMeteo").slider(
 	   $.ajax({	////////// FIRST AJAX
 			 type: 'post',
 			 //getting wordcloud of interests
-		     //url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     //url: MYRROR_API_ADDR+'api/stats/interests/wordcloud',
 		     
 		     //getting twitter messages
-		     url: 'http://90.147.102.243:5000/api/twitter/user_timeline',
+		     url: MYRROR_API_ADDR+'api/twitter/user_timeline',
 		     contentType: "application/json",
 		     
 		     /*data: { 
@@ -440,7 +442,7 @@ $("#sliderMeteo").slider(
 			  		    	
 			  		    	$.ajax({	//////////// Python call
 			  		        	type: 'post',
-			  		          	url: 'http://127.0.0.1:8000/FindEventRecommendations/',
+			  		          	url: DJANGO_API_ADDR+'FindEventRecommendations/',
 			  		          	//contentType: "application/json",
 			  		          	data: {
 			  		          		"username":sessionStorage.getItem('userPugliaEvent'),

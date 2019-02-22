@@ -65,7 +65,7 @@
                     <a class="nav-link " href="places.html" >Luoghi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="recommender.html" >Recommender</a>
+                    <a class="nav-link " href="recommender.html" >Suggerimenti</a>
                 </li>
             </ul>
         </div>
@@ -101,6 +101,7 @@
 <!--events section -->
 <section class="pt100 pb100">
     <div class="container">
+    	<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
     	<div>
   			<h5>Filtra i nostri eventi</h5>
   			<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
@@ -317,7 +318,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
@@ -327,8 +329,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	
-<!-- Custom js - Functions -->
-<script src="assets/js/utils.js"></script> 
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script> 
 	
 <script>
 $(document).ready(function(){ 
@@ -409,7 +412,7 @@ function loadAllEvents() {
 	
     $.ajax({
         type: 'post',
-        url: 'http://127.0.0.1:8000/api/getAllEvents/',
+        url: DJANGO_API_ADDR+'getAllEvents/',
         data:{
         	//'days':$("input[name=date]:checked").val(),
         	'location':document.getElementsByName('comune')[0].value,

@@ -40,7 +40,7 @@
     	var json = JSON.stringify(obj)
 		$.ajax({
 			 type: 'post',
-		     url: 'http://90.147.102.243:5000/api/user',
+		     url: MYRROR_API_ADDR+'api/user',
 		     contentType: "application/json",
 		     data: json,
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
@@ -65,7 +65,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/interests/wordcloud?db=gperniola&from=2019-01-01T11:06:12.506Z&to=2019-01-06T11:06:12.506Z&
-		     url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     url: MYRROR_API_ADDR+'api/stats/interests/wordcloud',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -104,7 +104,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/map?db=gperniola&from=2019-01-01T13:40:39.952Z&to=2019-01-06T13:40:39.952Z&
-		     url: 'http://90.147.102.243:5000/api/stats/map',
+		     url: MYRROR_API_ADDR+'api/stats/map',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -130,7 +130,7 @@
 		var messages = 10;
     	$.ajax({
 			 type: 'post',
-		     url: 'http://90.147.102.243:5000/api/twitter/user_timeline',
+		     url: MYRROR_API_ADDR+'api/twitter/user_timeline',
 		     contentType: "application/json",
 		     data: JSON.stringify({messages}),
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
@@ -154,7 +154,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/sentiment/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
-		     url: 'http://90.147.102.243:5000/api/stats/sentiment/timeline',
+		     url: MYRROR_API_ADDR+'api/stats/sentiment/timeline',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -179,7 +179,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
-		     url: 'http://90.147.102.243:5000/api/stats/emotion/timeline',
+		     url: MYRROR_API_ADDR+'api/stats/emotion/timeline',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -472,7 +472,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
+
+<!-- Date picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script>
 
 
 
@@ -484,7 +497,7 @@ function myrror_getUserData() {
 	var json = JSON.stringify(obj)
 	$.ajax({
 		 type: 'post',
-	     url: 'http://90.147.102.243:5000/api/user',
+	     url: MYRROR_API_ADDR+'api/user',
 	     contentType: "application/json",
 	     data: json,
 	     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
@@ -569,7 +582,7 @@ function getBehaviorData(data){
 
                 $.ajax({
                     type: 'post',
-                    url: 'http://90.147.102.243:5000/auth/login',
+                    url: MYRROR_API_ADDR+'auth/login',
                     data: json,
                     contentType: "application/json",
                     success: function (response) {
@@ -599,7 +612,7 @@ function getBehaviorData(data){
 
                         $.ajax({
                             type: 'post',
-                            url: 'http://90.147.102.243:5000/auth/signup',
+                            url: MYRROR_API_ADDR+'auth/signup',
                             data: json,
                             contentType: "application/json",
                             success: function (response) {
