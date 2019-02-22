@@ -340,11 +340,6 @@ $(function() {
                 }
     		});
     	},
-    	change: function (event, ui) {
-            if(!ui.item){
-                $("#nomeLuogo").val("");
-            }
-        },
     });
 });
 
