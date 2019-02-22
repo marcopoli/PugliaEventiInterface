@@ -480,15 +480,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script type='text/javascript'>
 $(document).ready(function(){ 
 	var userData = JSON.parse(sessionStorage.getItem('userData'));
-	checkConnectedSocials(userData);
-	getBehaviorData(userData);
+	
 	
 	if (userData.demographics.hasOwnProperty('name'))
 	 	document.getElementById("userName").innerHTML = userData.demographics.name.value;
-	else document.getElementById("userName").innerHTML = userData.username ;
+	else document.getElementById("userName").innerHTML = sessionStorage.getItem("userPugliaEvent") ;
 	 
 	if (userData.hasOwnProperty('pictureUrl'))
 	 	document.getElementById("profileImage").src = userData.pictureUrl;
+	
+	checkConnectedSocials(userData);
+	getBehaviorData(userData);
 });
 
 

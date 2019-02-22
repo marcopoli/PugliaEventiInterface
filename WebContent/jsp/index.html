@@ -624,7 +624,6 @@ $("#login").submit(function(e) {
   								$("#signupRes").text("Success!");
   			  	         		sessionStorage.setItem('userLocation', comune);
   			  	         		getData();
-  			  	         		document.location.href = "profile.html";  
   			  	             }, 
                              error: function(e) {//python backend error
                                   $("#signupRes").text("Errore di connessione al backend server. Contattare l'amministratore.");
