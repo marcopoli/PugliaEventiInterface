@@ -296,7 +296,8 @@ $(function() {
 			$.ajax({
 				type: 'get',
 				crossDomain: true,
-				url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
+				//url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getComuni/'+request.term,
+				url: DJANGO_API_ADDR + 'getComuni/'+request.term,
 				contentType: "application/json",
                 success: function( data ) {
                 	response( data );
@@ -314,7 +315,8 @@ $(function() {
     		$.ajax({
     			type: 'get',
     			crossDomain: true,
-                url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
+                //url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/getEvento/'+request.term,
+    			url: DJANGO_API_ADDR + 'getEventi/'+request.term,
                 contentType: "application/json",
                 success: function( data ) {
                 	response( data );
