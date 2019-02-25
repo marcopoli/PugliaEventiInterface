@@ -406,15 +406,15 @@ $("#sliderMeteo").slider(
 		    	 var messages = op.slice(0,10);
 		    	 
 		    	/*** DEBUG ***/
-		    	/*$.ajax({	////////// SECOND AJAX
+		    	$.ajax({	////////// SECOND AJAX
 		  			 type: 'post',
 		  		     url: 'http://90.147.170.25:8080/PersonalityEmpathy/rest/UserService/opinionMining',
 		  		     contentType: "application/json",
 		  		     data: JSON.stringify({messages}),
 		  	
 		  		     success: function (response) {
-							var payload = createPayloadData(response);;*/
-							var payload = createPayloadData(JSON.parse('{"results":{"entry":[{"key":"politics_joy","value":"1"},{"key":"sport_surprise","value":"1"},{"key":"travel_surprise","value":"1"},{"key":"travel_joy","value":"1"}]}}'), noWeatherData);
+							var payload = createPayloadData(response, noWeatherData);
+							//var payload = createPayloadData(JSON.parse('{"results":{"entry":[{"key":"politics_joy","value":"1"},{"key":"sport_surprise","value":"1"},{"key":"travel_surprise","value":"1"},{"key":"travel_joy","value":"1"}]}}'), noWeatherData);
 	
 			  		    	$.ajax({	//////////// THIRD AJAX
 			  		        	type: 'post',
@@ -468,13 +468,13 @@ $("#sliderMeteo").slider(
 			  		    	
 		  		    	 	     
 		  		     /********DEBUG*/
-		  		    /* },
+		  		     },
 		  		     error: function(e) {
 		  		       var je = JSON.parse(e.responseText);
 		  		       alert("failure opinionMining");
 		  		       //return false;
 		  		     }
-		    	   	}) //close second ajax call*/
+		    	   	}) //close second ajax call
 		    	   	
 		    	   	
 		    	 
