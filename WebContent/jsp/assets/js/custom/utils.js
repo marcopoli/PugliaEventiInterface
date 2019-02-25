@@ -271,16 +271,20 @@ function makePages(len, tipo){
 }
 
 
-function createPayloadData(topicData){	
-	 var behavior = 'behavior:{empathy:'+ sessionStorage.getItem('empathy') +
-		 			', agreeableness:'+ sessionStorage.getItem('agreeableness') +
-		 			', conscientiousness:'+ sessionStorage.getItem('conscientiousness') +
-		 			', extroversion:'+ sessionStorage.getItem('extroversion') +
-		 			', neuroticism:'+ sessionStorage.getItem('neuroticism') +
-		 			', openness:'+ sessionStorage.getItem('openness') +
+function createPayloadData(topicData, noWeatherData){	
+	var location = '"location":' +'"'+ document.getElementById("comune").value+'"';
+	var range = '"range":' + document.getElementById("slider-value").innerHTML;
+	var weather = '"weather":' + document.getElementById("sliderMeteo-value").innerHTML;
+	var NoWeatherData = '"no-weather-data":'+ noWeatherData;
+	 var behavior = '"behavior":{"empathy":'+ sessionStorage.getItem('empathy') +
+		 			', "agreeableness":'+ sessionStorage.getItem('agreeableness') +
+		 			', "conscientiousness":'+ sessionStorage.getItem('conscientiousness') +
+		 			', "extroversion":'+ sessionStorage.getItem('extroversion') +
+		 			', "neuroticism":'+ sessionStorage.getItem('neuroticism') +
+		 			', "openness":'+ sessionStorage.getItem('openness') +
 		 			'}';
- 	var topics = 'topics:'+JSON.stringify(topicData.results.entry);
-	var payload = '{data:{'+ behavior + ", " + topics + '}}';
+ 	var topics = '"topics":'+JSON.stringify(topicData.results.entry);
+	var payload = '{"data":{'+location+ ', '+ range + ', ' + weather + ', ' + NoWeatherData + ', ' + behavior + ", " + topics + '}}';
 	return payload;  
 }
 

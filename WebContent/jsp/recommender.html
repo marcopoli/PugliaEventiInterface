@@ -414,11 +414,12 @@ $("#sliderMeteo").slider(
 		  	
 		  		     success: function (response) {
 							var payload = createPayloadData(response);;*/
-							var payload = createPayloadData(JSON.parse('{"results":{"entry":[{"key":"politics_joy","value":"1"},{"key":"sport_surprise","value":"1"},{"key":"travel_surprise","value":"1"},{"key":"travel_joy","value":"1"}]}}'));
+							var payload = createPayloadData(JSON.parse('{"results":{"entry":[{"key":"politics_joy","value":"1"},{"key":"sport_surprise","value":"1"},{"key":"travel_surprise","value":"1"},{"key":"travel_joy","value":"1"}]}}'), noWeatherData);
 	
 			  		    	$.ajax({	//////////// THIRD AJAX
 			  		        	type: 'post',
-			  		          	url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/emotionRec',
+			  		          	//url: 'http://127.0.0.1:8080/PugliaEventi/rest/services/emotionRec',
+			  		          	url: DJANGO_API_ADDR+'RuleBasedRecommender/',
 			  		          	contentType: "application/json",
 			  		          	data: payload,
 			  		          	success: function (response) {
@@ -450,8 +451,8 @@ $("#sliderMeteo").slider(
 			  		          		"emotion":document.getElementById("emotion").value,
 			  		          		"companionship":document.getElementById("companionship").value,
 			  		          		"range":document.getElementById("slider-value").innerHTML,
-			  		          		'weather': document.getElementById("sliderMeteo-value").innerHTML,
-			  		        		'no-weather-data': noWeatherData
+			  		          		"weather": document.getElementById("sliderMeteo-value").innerHTML,
+			  		        		"no-weather-data": noWeatherData
 			  		          	},
 			  		          	
 			  	         	success: function(response){
