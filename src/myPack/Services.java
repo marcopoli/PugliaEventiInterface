@@ -4,13 +4,16 @@ package myPack;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,7 +23,6 @@ import javax.ws.rs.core.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Console;
 
 
 
@@ -192,4 +194,33 @@ public class Services{
 		
 		
 	}
+	
+	 @POST
+	 @Path("emotionRec")
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Response emotionRecommender(String inputStr) {
+		 	
+		 	JSONObject jsonObj = new JSONObject(inputStr);
+		 	JSONArray jout = new JSONArray();
+		 	try {
+				jout = Recommenders.emotionRecommender(jsonObj);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	return Response.status(200).entity(jout.toString()).build();
+	         //return Response.status(200).entity(topicsArr.toString()).build();
+
+	  }
+
 }
+
+
+

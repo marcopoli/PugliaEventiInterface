@@ -36,7 +36,7 @@
     	var json = JSON.stringify(obj)
 		$.ajax({
 			 type: 'post',
-		     url: 'http://90.147.102.243:5000/api/user',
+		     url: MYRROR_API_ADDR+'api/user',
 		     contentType: "application/json",
 		     data: json,
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
@@ -61,14 +61,28 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/interests/wordcloud?db=gperniola&from=2019-01-01T11:06:12.506Z&to=2019-01-06T11:06:12.506Z&
-		     url: 'http://90.147.102.243:5000/api/stats/interests/wordcloud',
+		     url: MYRROR_API_ADDR+'api/stats/interests/wordcloud',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
+		    	    source: "message_tag"
 		   			},
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
 		     success: function (response) {
 		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
+		    	 
+		    	 var info = JSON.parse(myjson);    
+		    	 console.log("wo:::" + myjson);
+		    	 //var values = info[0].value;
+		    	 
+		    	 var op = info.map(function(item) {
+		    		  return item.value;
+		    		});
+		    	 console.log(op.slice(0,10));
+		    	 myrror_getOpinionMining(op.slice(0,10));
+		    	 
+		    	 
 		    	 x.document.open();
 			       x.document.write('<html><body><h2>INTERESTS DATA</h2><pre>' + myjson + '</pre></body></html>');
 			       x.document.close();
@@ -86,7 +100,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/map?db=gperniola&from=2019-01-01T13:40:39.952Z&to=2019-01-06T13:40:39.952Z&
-		     url: 'http://90.147.102.243:5000/api/stats/map',
+		     url: MYRROR_API_ADDR+'api/stats/map',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -94,6 +108,7 @@
 		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
 		     success: function (response) {
 		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
 		    	 x.document.open();
 			       x.document.write('<html><body><h2>MAP DATA</h2><pre>' + myjson + '</pre></body></html>');
 			       x.document.close();
@@ -106,12 +121,36 @@
     	
     }
     
+    function myrror_getPosts(){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+		var messages = 10;
+    	$.ajax({
+			 type: 'post',
+		     url: MYRROR_API_ADDR+'api/twitter/user_timeline',
+		     contentType: "application/json",
+		     data: JSON.stringify({messages}),
+		     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response, null, 2);
+		    	 
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>POST DATA</h2><pre>' + myjson + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getPosts");
+		     }
+		});
+    	
+    }
+    
     function myrror_getSentiment(){
 		var x = window.open("", "newWindow", "width=1000,height=800");
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/sentiment/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
-		     url: 'http://90.147.102.243:5000/api/stats/sentiment/timeline',
+		     url: MYRROR_API_ADDR+'api/stats/sentiment/timeline',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -136,7 +175,7 @@
     	$.ajax({
 			 type: 'get',
 			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
-		     url: 'http://90.147.102.243:5000/api/stats/emotion/timeline',
+		     url: MYRROR_API_ADDR+'api/stats/emotion/timeline',
 		     contentType: "application/json",
 		     data: { 
 		    	    db: sessionStorage.getItem('userPugliaEvent'), 
@@ -155,20 +194,40 @@
 		});
     	
     }
+    
+    function myrror_getOpinionMining(data){
+		var x = window.open("", "newWindow", "width=1000,height=800");
+		var messages = data;
+		$.ajax({
+			 type: 'post',
+			 //http://90.147.102.243:5000/api/stats/emotion/timeline?db=gperniola&from=2019-01-07T15:14:46.962Z&to=2019-01-07T15:14:46.962Z&
+		     url: 'http://90.147.170.25:8080/PersonalityEmpathy/rest/UserService/opinionMining',
+		     contentType: "application/json",
+		     data: JSON.stringify({messages}),
+		    	   // messages : msg
+		   			//},
+		     //headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+		     success: function (response) {
+		    	 var myjson = JSON.stringify(response);
+		    	 var kj = response.results.entry;
+		    	 console.log(kj);
+		    	 var kj2 = JSON.stringify(kj);
+		    	 x.document.open();
+			       x.document.write('<html><body><h2>OPINION DATA</h2><pre>' + kj2 + '</pre></body></html>');
+			       x.document.close();
+		     },
+		     error: function(e) {
+		       var je = JSON.parse(e.responseText);
+		       alert("failure getMap");
+		     }
+		});
+    	
+    }
         
 </script>
     
-    
-    
-    
-    <script>
-    function linkAccountClick(){
-    	console.log("click!");	
-    	window.open("http://90.147.102.243:9090/identities/");
-    }
-    </script>
 </head>
-<body onload="myrror_getUserData();">
+<body>
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -198,6 +257,9 @@
                 <li class="nav-item">
                     <a class="nav-link " href="places.html" >Luoghi</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="recommender.html" >Suggerimenti</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -226,7 +288,7 @@
 
         <div class="breadcrumbs">
             <ul>
-                <li><a href="#">Social Accounts</span></li>
+                <li><span>Social Accounts</span></li>
             </ul>
         </div>
     </div>
@@ -249,7 +311,7 @@
                 
                 </div>
                 </div>
-                				
+              </div>  				
         </div>
 		<br><br>
 		<button class=" btn " onclick="myrror_getUser();">User Data</button>
@@ -257,6 +319,8 @@
 		<button class=" btn " onclick="myrror_getMap();">Map Data</button>
 		<button class=" btn " onclick="myrror_getSentiment();">Sentiment Data</button>
 		<button class=" btn " onclick="myrror_getEmotion();">Emotion Data</button>
+		<button class=" btn " onclick="myrror_getOpinionMining();">Opinion Mining</button>
+		<button class=" btn " onclick="myrror_getPosts();">Posts</button>
     </div>
 </section>
 <!--event section end -->
@@ -395,39 +459,40 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
+
+<!-- Date picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script>
 
 
 
 
 <script type='text/javascript'>
-function myrror_getUserData() {
-	var obj={};
-	obj["username"] = sessionStorage.getItem('userPugliaEvent');
-	var json = JSON.stringify(obj)
-	$.ajax({
-		 type: 'post',
-	     url: 'http://90.147.102.243:5000/api/user',
-	     contentType: "application/json",
-	     data: json,
-	     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
-	     success: function (response) {
-	    	 //console.log(response.demographics.name.value + "  " + response.pictureUrl);
-	    	 if (response.demographics.hasOwnProperty('name'))
-	    	 	document.getElementById("userName").innerHTML = response.demographics.name.value;
-	    	 else document.getElementById("userName").innerHTML = response.username;
-	    	 
-	    	 if (response.hasOwnProperty('pictureUrl'))
-	    	 	document.getElementById("profileImage").src = response.pictureUrl;
-	    	 
-	    	 checkConnectedSocials(response);
-	     },
-	     error: function(e) {
-	       var je = JSON.parse(e.responseText);
-	       console.log("API request to Myrror failed.");
-	     }
-	});
-}
+$(document).ready(function(){ 
+	var userData = JSON.parse(sessionStorage.getItem('userData'));
+	
+	
+	if (userData.demographics.hasOwnProperty('name'))
+	 	document.getElementById("userName").innerHTML = userData.demographics.name.value;
+	else document.getElementById("userName").innerHTML = sessionStorage.getItem("userPugliaEvent") ;
+	 
+	if (userData.hasOwnProperty('pictureUrl'))
+	 	document.getElementById("profileImage").src = userData.pictureUrl;
+	
+	checkConnectedSocials(userData);
+	getBehaviorData(userData);
+});
+
 
 function checkConnectedSocials(data){
 	var NoSocialConnected = true;
@@ -462,62 +527,30 @@ function checkConnectedSocials(data){
 	}
 }
 
+function getBehaviorData(data){
+	if (data.hasOwnProperty("empathies") && data.hasOwnProperty("personalities")){
+		
+		sessionStorage.setItem('empathy', data.empathies[data.empathies.length-1].value);
+		sessionStorage.setItem('agreeableness', data.personalities[data.personalities.length-1].agreeableness);
+		sessionStorage.setItem('conscientiousness', data.personalities[data.personalities.length-1].conscientiousness);
+		sessionStorage.setItem('extroversion', data.personalities[data.personalities.length-1].extroversion);
+		sessionStorage.setItem('neuroticism', data.personalities[data.personalities.length-1].neuroticism);
+		sessionStorage.setItem('openness', data.personalities[data.personalities.length-1].openness);
+		
+		console.log(	"emp: " + sessionStorage.getItem('empathy') + 
+						"\nagr: " + sessionStorage.getItem('agreeableness') + 
+						"\ncon: " + sessionStorage.getItem('conscientiousness') + 
+						"\next: " + sessionStorage.getItem('extroversion') + 
+						"\nneu: " + sessionStorage.getItem('neuroticism') + 
+						"\nope: " + sessionStorage.getItem('openness')
+		);
+	}
+}
 
+function linkAccountClick(){
+	window.open("http://90.147.102.243:9090/identities/");
+}
 
-	function ckecks( ) {
-
-                $.ajax({
-                    type: 'post',
-                    url: 'http://90.147.102.243:5000/auth/login',
-                    data: json,
-                    contentType: "application/json",
-                    success: function (response) {
-                    //  var je = JSON.parse(response.responseText);
-                      $("#loginRes").text("Success!");
-                      sessionStorage.setItem('tokenPugliaEvent', response.token);
-                      sessionStorage.setItem('userPugliaEvent', response.username);
-                      sessionStorage.setItem('emailPugliaEvent', email);
-                    },
-                    error: function(e) {
-                      var je = JSON.parse(e.responseText);
-                       $("#loginRes").text(je.message);
-                    }
-                });
-        }
-
-        $("#signup").submit(function(e) {
-          e.preventDefault();
-          var username = document.getElementById('usernameIscr').value;
-          var email = document.getElementById('emailIscr').value;
-          var password = document.getElementById('passwordIscr').value;
-          var password2 = document.getElementById('passwordIscr2').value;
-
-
-          if (password == password2 && username != "" && email !=""){
-                        var json = toJSONString( this );
-
-                        $.ajax({
-                            type: 'post',
-                            url: 'http://90.147.102.243:5000/auth/signup',
-                            data: json,
-                            contentType: "application/json",
-                            success: function (response) {
-                            //  var je = JSON.parse(response.responseText);
-                              $("#signupRes").text("Success!");
-                              sessionStorage.setItem('tokenPugliaEvent', response.token);
-                              sessionStorage.setItem('userPugliaEvent', username);
-                              sessionStorage.setItem('emailPugliaEvent', email);
-                            },
-                            error: function(e) {
-                              var je = JSON.parse(e.responseText);
-                               $("#signupRes").text(je.message);
-                            }
-                        });
-                      }else{
-                        $("#signupRes").text("Errore di iscrizione ricontrolla i dati");
-                      }
-
-                });
 
   </script>
 

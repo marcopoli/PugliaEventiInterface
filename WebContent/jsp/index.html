@@ -1,7 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+ 	
+ 	<!-- Bootstrap CSS -->
+    <!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">-->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/et-line.css" rel="stylesheet">
+    <link href="assets/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    
+    <link href="assets/css/spinner.css" rel="stylesheet">
 
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        
 
   <script>
   function on() {
@@ -25,54 +46,7 @@
   }
   </script>
 
-  <style>
-#overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 100px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
-}
 
-#text{
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    font-size: 50px;
-    color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
-#overlayIscr {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 100px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
-}
-
-#textIscr{
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    font-size: 50px;
-    color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
-</style>
 
     <!-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
@@ -105,73 +79,89 @@
     <div class="loader-inner"></div>
 </div>
 
-<!-- login -->
-<div id="overlay">
-
-  <div id="text" style="background-color:white; height:70%; width:30%;color:black; padding-left:100px;height:90%;">
-<div class="ion-close-circled" onclick="off();" style="font-size:16px;z-index:999;padding-top:25px!important;margin-left:-65px!important;"></div>
-<footer style ="background-color:white!important;color:black!important;margin:0!important">
-    <div class="footer_box" style ="margin:0px!important">
-    <h4 class="footer_title" style="color:black!important;">Login</h4>
-    <tr><td colspan="2"><br><br><div id ="loginRes" style = "color:red!important;font-size:14px;"></div></td></tr>
-    <form id="login" name = "login" method ='post' enctype='multipart/form-data'>
-      <table style="font-size: 14px;">
-        <tr>
-            <td>Email:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td><input name ="email" id ="email" width="80px"/>
-        </tr>
-        <tr>
-          <td>Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td><input name ="password" id ="password" type="password" width="80px"/>
-        </tr>
-        <tr><td colspan="2"><br><br><input class=" btn btn-primary btn-rounded" type="submit" name="submit" id="submit" value="Entra"/></td></tr>
-        <tr><td colspan="2"><div onclick="off(); onIscr();" style="color:blue!important;font-size:12px !important">Non sei ancora iscritto? Iscriviti ora!</div></td></tr>
-      </table>
-
-
-    </form>
-  </div>
-</footer>
-
+<!-- Login Modal-->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Effettua il login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="login" name = "login" method ='post' enctype='multipart/form-data'>
+      	<div class="modal-body" >
+      	<div style="text-align:center;" class="d-none" id="loginSpinner"><div class="lds-dual-ring"></div><div><h5>Accesso in corso..</h5></div></div>
+      	<div class="d-none" id="loginForm">
+		<div class="form-group form-inline">
+			<label for="email" class="col-form-label col-sm-3">Email</label>
+			<input type="email" class="form-control col-sm-8" id="email" name="email"  nome ="email" required>
+		</div>
+		<div class="form-group form-inline">
+			<label for="password" class="col-form-label col-sm-3">Password</label>
+			<input type="password" class="form-control col-sm-8" id="password" name="password"  nome ="password" required>
+		</div>
+		<div class="form-group form-inline">
+			<input class=" btn btn-primary btn-rounded col-sm-4" type="submit" name="submitEntra" id="submitEntra" value="Entra"/>
+			<div class = "col-sm-8" id ="loginRes" style="color:red;"></div>
+		</div>
+		</div>	
+		</div>
+		<div class="modal-footer">
+				<div id="loginFooter" class="d-none"><a href= # data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#iscrModal">Non sei ancora iscritto? <b>Iscriviti ora!</b></a></div>	
+		</div>
+    </form>  
+    </div>
   </div>
 </div>
 
-<!-- Div Iscrizione -->
-<div id="overlayIscr">
-
-  <div id="text" style="background-color:white; height:70%; width:30%;color:black; padding-left:100px;height:90%;">
-    <div class="ion-close-circled" onclick="offIscr();" style="font-size:16px;z-index:999;padding-top:25px!important;margin-left:-65px!important;"></div>
-    <footer style ="background-color:white!important;color:black!important;margin:0!important">
-        <div class="footer_box" style ="margin:0px!important">
-    <h4 class="footer_title" style="color:black!important;">Iscrizione</h4>
-    <tr><td colspan="2"><br><br><div id ="signupRes" style = "color:red!important;font-size:14px;"></div></td></tr>
-    <form id="signup" name = "signup" method ='post' enctype='multipart/form-data'>
-      <table style="font-size: 14px;">
-        <tr>
-            <td>Username:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td><input name ="username" id ="usernameIscr" width="80px"/>
-        </tr>
-        <tr>
-            <td>Email:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td><input name ="email" id ="emailIscr" width="80px"/>
-        </tr>
-        <tr>
-          <td>Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td><input name ="password" id ="passwordIscr" type="password" width="80px"/>
-        </tr>
-        <tr>
-          <td>Re-Password:   &nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td><input name ="password2" id ="passwordIscr2" type="password" width="80px"/>
-        </tr>
-        <tr><td colspan="2"><br><br><input class=" btn btn-primary btn-rounded" type="submit" name="submit" id="submit" value="Iscriviti"/></td></tr>
-        <tr><td colspan="2"><div onclick="offIscr(); on();" style="color:blue!important;font-size:12px!important">Hai già un account?Entra!</div></td></tr>
-      </table>
 
 
-    </form>
-  </div>
-</footer>
-
+<!-- Iscrizione Modal-->
+<div class="modal fade" id="iscrModal" tabindex="-1" role="dialog" aria-labelledby="iscrModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="iscrModalLabel">Iscriviti alla piattaforma!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="signup" name = "signup" method ='post' enctype='multipart/form-data'>
+      	<div class="modal-body" id="iscrModalBody">
+      	<div style="text-align:center;"><div class="lds-dual-ring d-none" id="iscrSpinner"></div><div><h5>Accesso in corso..</h5></div></div>
+      	<div class="d-none" id="iscrForm">
+      	<div class="form-group form-inline">
+			<label for="usernameIscr" class="col-form-label col-sm-4">Username</label>
+			<input type="text" class="form-control col-sm-8" id="usernameIscr" name="username"  nome ="username" placeholder="nome utente" required>
+		</div>
+		<div class="form-group form-inline">
+			<label for="emailIscr" class="col-form-label col-sm-4">Email</label>
+			<input type="email" class="form-control col-sm-8" id="emailIscr" name="email"  nome ="email" placeholder="nome@dominio.com" required>
+		</div>
+		<div class="form-group form-inline">
+			<label for="passwordIscr" class="col-form-label col-sm-4">Password</label>
+			<input type="password" class="form-control col-sm-8" id="passwordIscr" name="password"  nome ="password" required>
+		</div>
+		<div class="form-group form-inline">
+			<label for="passwordIscr2" class="col-form-label col-sm-4">Re-Password</label>
+			<input type="password" class="form-control col-sm-8" id="passwordIscr2" name="password2"  nome ="password2" required>
+		</div>
+		<div class="form-group form-inline">
+			<label for="comune" class="col-form-label col-sm-4">Residenza</label>
+			<input type="text" class="form-control col-sm-8" id="comune" name="comune"  nome ="comune" required placeholder="comune di residenza">
+		</div>
+		<div class="form-group form-inline">
+			<input class=" btn btn-primary btn-rounded col-sm-4" type="submit" name="submitIscr" id="submitIscr" value="Iscriviti"/>
+			<div class = "col-sm-8" id ="signupRes" style="color:red;"></div>
+		</div>
+		</div>
+		</div>	
+		<div class="modal-footer">
+				<div id="iscrFooter" class="d-none"><a href= # data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#loginModal">Hai già un account? <b>Entra!</b></a></div>	
+		</div>
+    </form>  
+    </div>
   </div>
 </div>
 
@@ -191,10 +181,10 @@
                     <a class="nav-link active" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#" onclick="on()">Entra</a>
+                    <a class="nav-link " href="#"  data-toggle="modal" data-target="#loginModal">Entra</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#" onclick="onIscr()">Iscriviti</a>
+                    <a class="nav-link " data-toggle="modal" data-target="#iscrModal">Iscriviti</a>
                 </li>
                 <li class="search_btn">
                     <a  href="#info">
@@ -226,7 +216,7 @@
                               Eventi, attività e luoghi in cui andare con gli amici! <br>
                               Tutto incentrato sui tuoi interessi
                           </p>
-                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                          <a href="#" class=" btn btn-primary btn-rounded"  data-toggle="modal" data-target="#loginModal">
                               Entra!
                           </a>
                         </div>
@@ -247,7 +237,7 @@
                               Eventi, attività e luoghi in cui andare con gli amici! <br>
                               Tutto incentrato sui tuoi interessi
                           </p>
-                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                          <a href="#" class=" btn btn-primary btn-rounded"  data-toggle="modal" data-target="#loginModal">
                               Entra!
                           </a>
                         </div>
@@ -268,7 +258,7 @@
                               Eventi, attività e luoghi in cui andare con gli amici! <br>
                               Tutto incentrato sui tuoi interessi
                           </p>
-                          <a href="#" class=" btn btn-primary btn-rounded"  onclick="on()">
+                          <a href="#" class=" btn btn-primary btn-rounded"  data-toggle="modal" data-target="#loginModal">
                               Entra!
                           </a>
                         </div>
@@ -497,9 +487,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- WOW JS -->
 <script src="assets/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/custom/main.js"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
+
+<!-- Date picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	
+<!-- Custom js - Functions and constants -->
+<script src="assets/js/custom/constants.js"></script>
+<script src="assets/js/custom/utils.js"></script> 
 
 <script type='text/javascript'>
+$(document).ready(function(){ 
+	$("#loginForm").toggleClass('d-none');
+	$("#iscrForm").toggleClass('d-none');
+	$("#loginFooter").toggleClass('d-none');
+	$("#iscrFooter").toggleClass('d-none');
+});
+
+
 	function toJSONString( form ) {
 		var obj = {};
 		var elements = form.querySelectorAll( "input, select, textarea" );
@@ -530,68 +540,138 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   }
 
 $("#login").submit(function(e) {
-  var json = toJSONString( this );
+			$("#loginSpinner").toggleClass('d-none');
+			$("#loginForm").toggleClass('d-none');
+			$("#loginFooter").toggleClass('d-none');
+  			var json = toJSONString( this );
                 e.preventDefault();
                 var email = document.getElementById('email').value;
                 $.ajax({
                     type: 'post',
-                    url: 'http://90.147.102.243:5000/auth/login',
+                    crossDomain: true,
+                    url: MYRROR_API_ADDR+'auth/login',
                     data: json,
                     contentType: "application/json",
                     success: function (response) {
                     //  var je = JSON.parse(response.responseText);
-                      $("#loginRes").text("Success!");
+
                       
                       //---------------------
+                      sessionStorage.clear();
                       sessionStorage.setItem('tokenPugliaEvent', response.token);
                       sessionStorage.setItem('userPugliaEvent', response.username);
                       sessionStorage.setItem('emailPugliaEvent', email);
-                    //chiude la finestra di login e redirect a pagina profilo
-                     off();
-                     document.location.href = "profile.html";
+                      
+                      $.ajax({	//////////// Python call to get user location
+		  		        	type: 'post',
+		  		        	crossDomain: true,
+		  		          	url: DJANGO_API_ADDR+'GetUserLocation/',
+		  		          	//contentType: "application/json",
+		  		          	data: {"username": response.username},
+		  	         		success: function(response){
+		                        $("#loginRes").text("Success!");
+		  	         			var loc = response.user_location;
+		  	         			sessionStorage.setItem('userLocation', loc);
+		  	         			getData();
+			                    	                
+		  	             	},
+		                    error: function(e) { //Python backend error
+		                    	$("#loginRes").text("Errore di connessione al backend server. Contattare l'amministratore.");
+		                        $("#loginSpinner").toggleClass('d-none'); $("#loginForm").toggleClass('d-none'); $("#loginFooter").toggleClass('d-none');
+		                    }
+		  		    		}) //close python    	           
                     },
-                    error: function(e) {
+                    error: function(e) { //Myrror error
                       var je = JSON.parse(e.responseText);
                        $("#loginRes").text(je.message);
+                       $("#loginSpinner").toggleClass('d-none'); $("#loginForm").toggleClass('d-none'); $("#loginFooter").toggleClass('d-none');
                     }
                 });
         });
 
         $("#signup").submit(function(e) {
+        	$("#iscrSpinner").toggleClass('d-none');
+			$("#iscrForm").toggleClass('d-none');
+			$("#iscrFooter").toggleClass('d-none');
           e.preventDefault();
           var username = document.getElementById('usernameIscr').value;
           var email = document.getElementById('emailIscr').value;
           var password = document.getElementById('passwordIscr').value;
           var password2 = document.getElementById('passwordIscr2').value;
+          var comune = document.getElementById('comune').value;
+			
 
-
-          if (password == password2 && username != "" && email !=""){
+          if (password == password2 && username != "" && email !="" && comune != "" && password != ""){
                         var json = toJSONString( this );
 
                         $.ajax({
                             type: 'post',
-                            url: 'http://90.147.102.243:5000/auth/signup',
+                            crossDomain: true,
+                            url: MYRROR_API_ADDR+'auth/signup',
                             data: json,
                             contentType: "application/json",
-                            success: function (response) {
-                            //  var je = JSON.parse(response.responseText);
-                              $("#signupRes").text("Success!");
+                            success: function (response) {  
                               sessionStorage.setItem('tokenPugliaEvent', response.token);
                               sessionStorage.setItem('userPugliaEvent', username);
                               sessionStorage.setItem('emailPugliaEvent', email);
-                            },
-                            error: function(e) {
+                              $.ajax({	//////////// Python call to add new user
+  			  		        	type: 'post',
+  			  		          	url: DJANGO_API_ADDR+'AddUser/',
+  			  		          	//contentType: "application/json",
+  			  		          	data: {"username": username, "location": comune},
+  			  	         		success: function(response){
+  								//success
+  								$("#signupRes").text("Success!");
+  			  	         		sessionStorage.setItem('userLocation', comune);
+  			  	         		getData();
+  			  	             }, 
+                             error: function(e) {//python backend error
+                                  $("#signupRes").text("Errore di connessione al backend server. Contattare l'amministratore.");
+                                  $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
+                             }
+  			  		    	}) //close python
+                            }, 
+                            error: function(e) {//Myrror error
                               var je = JSON.parse(e.responseText);
                                $("#signupRes").text(je.message);
+                               $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
                             }
                         });
-                      }else{
-                        $("#signupRes").text("Errore di iscrizione ricontrolla i dati");
+                      }else{ //form error
+                        $("#signupRes").text("Errore di iscrizione. Ricontrollare i dati.");
+                        $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
                       }
 
                 });
-
-  </script>
-
+        
+        
+        
+function getData(){
+	var obj={};
+	obj["username"] = sessionStorage.getItem('userPugliaEvent');
+	var json = JSON.stringify(obj)
+	$.ajax({
+		 type: 'post',
+		 crossDomain: true,
+	     url: MYRROR_API_ADDR+'api/user',
+	     contentType: "application/json",
+	     data: json,
+	     headers: {'x-access-token' : sessionStorage.getItem('tokenPugliaEvent')},
+	     success: function (response) {
+	    	 sessionStorage.setItem('userData', JSON.stringify(response));
+	    	 document.location.href = "profile.html";  
+	    	 
+	     },
+	     error: function(e) {
+	    	 var je = JSON.parse(e.responseText);
+             $("#signupRes").text(je.message);
+             $("#iscrSpinner").toggleClass('d-none'); $("#iscrForm").toggleClass('d-none'); $("#iscrFooter").toggleClass('d-none');
+	     }
+	});
+	
+	
+}
+        
+</script>
 </body>
 </html>

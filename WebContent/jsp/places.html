@@ -8,7 +8,7 @@
     <meta name="author" content="ColorLib">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- ========== Title ========== -->
-    <title> Evento - Event Html Template</title>
+    <title> Luoghi - Event Html Template</title>
     <!-- ========== Favicon Ico ========== -->
     <!--<link rel="icon" href="fav.ico">-->
     <!-- ========== STYLESHEETS ========== -->
@@ -35,7 +35,7 @@
 
 </head>
 
-<body onload="loadAllEvents();"> 
+<body onload="loadAllPlaces();"> 
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -59,10 +59,10 @@
                     <a class="nav-link " href="profile.html" >Personal Page</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#" >Eventi</a>
+                    <a class="nav-link " href="events.html" >Eventi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="places.html" >Luoghi</a>
+                    <a class="nav-link " href="#" >Luoghi</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="recommender.html" >Suggerimenti</a>
@@ -81,7 +81,7 @@
             <div class="col-12">
                 <div class="inner_cover_content">
                     <h3>
-                       Eventi sul territorio dei prossimi giorni!
+                       Tutte le location sul nostro territorio!
                     </h3>
                 </div>
             </div>
@@ -90,7 +90,7 @@
         <div class="breadcrumbs">
             <ul>
                 <li><a href="#">Home</a>  |   </li>
-                <li><span>Events</span></li>
+                <li><span>Luoghi</span></li>
             </ul>
         </div>
     </div>
@@ -101,55 +101,44 @@
 <!--events section -->
 <section class="pt100 pb100">
     <div class="container">
-    	<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
+    
+    	<div class="card text-white bg-danger d-none" id="firstConfigHelp">
+		  <div class="card-body">
+		    <h5 class="card-title text-white">ATTENZIONE: Effettua la tua prima configurazione del profilo!</h5>
+		    <p class="card-text text-white">Per permetterci di offrirti dei suggerimenti sugli eventi è necessario che tu ci fornisca un insieme di luoghi che hai già visitato, indicandoci
+		    anche il contesto in cui ti trovavi al momento della visita (stato emotivo e compagnia).</p>
+		    <p class="card-text text-white">Utilizza i filtri e segui le istruzioni più sotto per selezionare correttamente i luoghi.</p>
+		  </div>
+		</div>
+		<div class="border border-danger" style="margin-top:5px; margin-bottom:15px;"></div>
+    
     	<div>
-  			<h5>Filtra i nostri eventi</h5>
+  			<h5>Filtra i punti di interesse</h5>
   			<!--Nome evento:&nbsp;&nbsp;<input type="text" id="nome" width="50px" nome ="nome" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
 			<!--  <form id="cercaEventi" name = "cercaEventi" enctype='multipart/form-data'> -->
   			<form>
+  				<div class="form-group form-inline">
+					<label for="nomeLuogo" class="col-sm-2 col-form-label">Nome del luogo </label>
+					<div class="col-sm-4"><input type="text" class="form-control" id="nomeLuogo" name="nomeLuogo"  nome ="nomeLuogo"/></div>
+				</div>
 				<div class="form-group form-inline">
 					<label for="comune" class="col-sm-2 col-form-label">Città in cui cercare </label>
-					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune" /></div>
+					<div class="col-sm-4"><input type="text" class="form-control" id="comune" name="comune"  nome ="comune"/></div>
 				</div>
-				<div class="form-group form-inline">
-					<label for="daterange" class="col-sm-2 col-form-label">Intervallo di tempo</label>
-					<div class="col-sm-4"><input class="form-control" type="text" name="daterange" id="daterange" /></div>
-				</div>
-				<div class="form-group form-inline">
+				<!--  <div class="form-group form-inline">
 					<label for="slider" class="col-sm-2 col-form-label">Raggio di ricerca </label>
-					<div class="col-sm-4"><span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="slider-value">50</span>&nbsp;km</strong></div>
+					<div class="col-sm-4"><span id="slider" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="slider-value">10</span>&nbsp;km</strong></div>
+				</div> -->
+				<div class="form-group form-inline">
+  					<label class="form-check-label col-sm-4" for="checkPlacesWithEvents">Mostra solo le location con eventi programmati</label>
+  					<input class="form-check-input" type="checkbox" value="" id="checkPlacesWithEvents">	
 				</div>
 				<div class="form-group form-inline">
-					<label for="sliderMeteo" class="col-sm-2 col-form-label">Condizioni meteo </label>
-					<div class="col-sm-4"><span id="sliderMeteo" style="width:100px;display:inline-block"></span>&nbsp;&nbsp;&nbsp;&nbsp;<strong><span id="sliderMeteo-label">Qualsiasi</span></strong><span class="d-none" id="sliderMeteo-value">0</span></div>
+  					<label class="form-check-label col-sm-4" for="checkOnlyRatedPlaces">Mostra solo le location già visitate</label>
+  					<input class="form-check-input" type="checkbox" value="" id="checkOnlyRatedPlaces">	
 				</div>
-				<div class="form-group form-inline">
-  					<label class="form-check-label col-sm-5" for="checkNoMeteoData">Mostra eventi con previsioni non disponibili nelle date indicate</label>
-  					<input class="form-check-input" type="checkbox" value="" id="checkNoMeteoData" checked>	
-				</div>
-				<!-- 
- 				<div class="form-group form-inline">
- 					<label class="col-sm-2 col-form-label">Intervallo di tempo</label>
-    				<div class="form-check col-sm-2">
-				  		<input class="form-check-input" type="radio"  name="date" id="radio1" value="1d">
-				  		<label class="form-check-label" for="radio1"><strong>Oggi</strong></label>
-					</div>
-					<div class="form-check col-sm-2">
-				  		<input class="form-check-input" type="radio"  name="date" id="radio2" value="7d" checked>
-				  		<label class="form-check-label" for="radio2"><strong>Prossimi 7 giorni</strong></label>
-					</div>
-					<div class="form-check col-sm-2">
-				  		<input class="form-check-input" type="radio"  name="date" id="radio3" value="1m">
-				  		<label class="form-check-label" for="radio3"><strong>Prossimi 30 giorni</strong></label>
-					</div>
-					<div class="form-check col-sm-2">
-				  		<input class="form-check-input" type="radio"  name="date" id="radio4" value="6m">
-				  		<label class="form-check-label" for="radio4"><strong>Prossimi 6 mesi</strong></label>
-					</div>
-    			</div>
-	    		 -->
 	    		<div class="form-group">
-	    			<a  class=" btn btn-primary btn-rounded mb-2" style="color:white;" onclick="loadAllEvents();">Cerca eventi</a>
+	    			<a  class=" btn btn-primary btn-rounded mb-2" style="color:white;" onclick="loadAllPlaces();">Cerca locations</a>
 	    		</div>
   			</form>
 		</div>
@@ -158,11 +147,17 @@
     	<div id ="waiting"></div>
 
 
-	<div style="display: inline-block; padding-right:15px;" id="listPlaceholder"><h1>Eventi</h1></div>
-	<div style="display: inline-block;"><h3 id="counterEvents"></h3></div>
+		<div style="display: inline-block; padding-right:15px;" id="listPlaceholder"><h1>Punti di interesse</h1></div>
+		<div style="display: inline-block;"><h3 id="counterPlaces"></h3></div>
+		
+		<div class="card text-white bg-danger d-none col-sm-6 mx-auto text-center" id="placePickerHelp">
+			<div class="card-body">
+				<span class="card-text text-white">Seleziona <b><span id="nSelect"></span></b> luoghi che hai visitato nel contesto: <b><span id="targetContext"></span></b></span>		
+			</div>
+		</div>
 
 
-<div id ="eventiContainer" name ="eventiContainer">
+<div id ="placesContainer" name ="placesContainer">
 </div>
    <ul id="pagination-demo" class="pagination-sm"></ul>
 </div>
@@ -307,6 +302,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="assets/js/popper.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/waypoints.min.js"></script>
+
+
 <!--slick carousel -->
 <script src="assets/js/owl.carousel.min.js"></script>
 <!--parallax -->
@@ -320,6 +317,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Custom js -->
 <script src="assets/js/custom/main.js"></script>
 
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.js"></script>
@@ -328,107 +326,187 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Date picker -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+<!-- AngularJS -->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> -->
 	
 <!-- Custom js - Functions and constants -->
 <script src="assets/js/custom/constants.js"></script>
 <script src="assets/js/custom/utils.js"></script> 
 	
 <script>
+
+var n_select = 0;
+var contextString = "";
+var isFirstConfig = false;
+var targetMood = "";
+var targetCompanionship = "";
+var ancoraDaInserire = 0;
+
+$.holdReady(true);
+checkConfigIsDone();
+
+
+
+function checkConfigIsDone(){
+$.ajax({
+    type: 'post',
+    url: DJANGO_API_ADDR+'getRatings/',
+    data:{
+    	'username': sessionStorage.getItem('userPugliaEvent'),
+    },
+    success: function (response) {
+    	if (!response.first_config_done){
+    		//show first config stuff
+    		isFirstConfig = true;
+    		$("#firstConfigHelp").removeClass('d-none');
+    		$("#placePickerHelp").removeClass('d-none');
+    		placePicker(response);
+    		//callback();
+    		refreshContextLabels();
+    	}
+    	else{
+    		$("#firstConfigHelp").addClass('d-none');
+    		$("#placePickerHelp").addClass('d-none');
+    		//loadPagePlaces(page);
+    	}
+    	$.holdReady(false);	
+    },
+    error: function(e) {
+      var je = JSON.parse(e.responseText);
+       alert("ko");
+    }
+});
+}
+
+function placePicker(data){
+	nAngryAloneToSelect = MIN_CONTEXT_PLACES - data.n_angry_alone;
+	nAngryFriendsToSelect = MIN_CONTEXT_PLACES - data.n_angry_withFriends;
+	nJoyfulAloneToSelect = MIN_CONTEXT_PLACES - data.n_joyful_alone;
+	nJoyfulFriendsToSelect = MIN_CONTEXT_PLACES - data.n_joyful_withFriends;
+	nSadAloneToSelect = MIN_CONTEXT_PLACES - data.n_sad_alone;
+	nSadFriendsToSelect = MIN_CONTEXT_PLACES - data.n_sad_withFriends;
+	
+	ancoraDaInserire = nAngryAloneToSelect + nAngryFriendsToSelect + nJoyfulAloneToSelect + nJoyfulFriendsToSelect + nSadAloneToSelect + nSadFriendsToSelect;
+	
+	if (nAngryAloneToSelect > 0){
+		//document.getElementById("nSelect").innerHTMl = nAngryAloneToSelect;
+		//document.getElementById("actualContext").innerHTMl = "Arrabbiato, Da solo";
+		n_select = nAngryAloneToSelect;
+		contextString = "Arrabbiato, Da solo";
+		targetMood= "angry";
+		targetCompanionship="alone";
+		console.log("placepicker:" + contextString + "  " +n_select);
+		ancoraDaInserire--;
+		return;
+	}
+	if (nAngryFriendsToSelect > 0){
+		n_select = nAngryFriendsToSelect;
+		contextString = "Arrabbiato, In compagnia";
+		targetMood= "angry";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nJoyfulAloneToSelect > 0){
+		n_select = nJoyfulAloneToSelect;
+		contextString = "Felice, Da solo";
+		targetMood= "joyful";
+		targetCompanionship="alone";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nJoyfulFriendsToSelect > 0){
+		n_select = nJoyfulFriendsToSelect;
+		contextString = "Felice, In compagnia";
+		targetMood= "joyful";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nSadAloneToSelect > 0){
+		n_select = nSadAloneToSelect;
+		contextString = "Trieste, Da solo";
+		targetMood= "sad";
+		targetCompanionship="alone";
+		ancoraDaInserire--;
+		return;
+	}
+	if (nSadFriendsToSelect > 0){
+		n_select = nSadFriendsToSelect;
+		contextString = "Trieste, In compagnia";
+		targetMood= "sad";
+		targetCompanionship="withFriends";
+		ancoraDaInserire--;
+		return;
+	}
+	
+	/*if(nAngryAloneToSelect <= 0 && nAngryFriendsToSelect <= 0 && nJoyfulAloneToSelect <= 0 && nJoyfulFriendsToSelect <= 0 && nSadAloneToSelect <= 0 && nSadFriendsToSelect <= 0){
+		window.location.reload();
+		
+	}*/
+	
+	
+}
+
+function refreshContextLabels(){
+	$("#targetContext").html(contextString);
+	$("#nSelect").html(n_select);
+	//console.log("print labels: " + contextString + "  " +n_select);
+}
+
+
 $(document).ready(function(){ 
 	document.getElementById("comune").value = sessionStorage.getItem('userLocation');
+	$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+	refreshContextLabels();
+
 });
+
 
 
 $("#slider").slider(
 {
-            value:50,
+            value:10,
             min: 0,
-            max: 200,
-            step: 10,
+            max: 30,
+            step: 5,
             slide: function( event, ui ) {
                 $( "#slider-value" ).html( ui.value );
             }
 }
 );
 
-$("#sliderMeteo").slider(
-		{
-            value:0,
-            min: 0,
-            max: 4,
-            step: 1,
-            slide: function( event, ui ) {
-            	var descr = "";
-            	if (ui.value == 0) descr = "Qualsiasi";
-            	if (ui.value == 1) descr = "Pioggia o migliore";
-            	if (ui.value == 2) descr = "Nuvoloso o migliore";
-            	if (ui.value == 3) descr = "Sereno o poco nuvoloso";
-            	if (ui.value == 4) descr = "Solo sereno";
-                $( "#sliderMeteo-label" ).html(descr);
-                $( "#sliderMeteo-value" ).html(ui.value);
-            }
-		}
-);
 
-
-
-
-$(function() {
-	  $('input[name="daterange"]').daterangepicker({
-	    ranges: {
-	        'Oggi': [moment(), moment()],
-	        'Prossimi 7 giorni': [moment(), moment().add(7, 'days')],
-	        'Prossimo mese': [moment(), moment().add(30, 'days')],
-	        'Prossimi 6 mesi': [moment(), moment().add(6,'months')],
-	    },
-		minDate:moment(),
-		startDate: moment(),
-		endDate: moment().add(7,'days'),
-		"maxSpan": {
-	        "months": 6
-	    },
-		locale: {
-		      format: 'DD/MM/YYYY'
-		}
-	  }, function(start, end, label) {
-	    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-	    start_date = start.format('YYYY-MM-DD');
-	    end_date = end.format('YYYY-MM-DD');
-	  });
-	});
-
-	
-
-
-
-
-function loadAllEvents() {
+function loadAllPlaces(){
 	document.getElementById("waiting").innerHTML ='<div style="text-align:center;"><div class="lds-dual-ring"></div><div><h5>Recupero dati in corso..</h5></div></div>';
-	document.getElementById("eventiContainer").innerHTML ="";
+	document.getElementById("placesContainer").innerHTML ="";
 	document.getElementById("listPlaceholder").innerHTML ="";
-	document.getElementById("counterEvents").innerHTML =""
-	var noWeatherData = 0;
-	if (document.getElementById("checkNoMeteoData").checked) noWeatherData = 1;
+	document.getElementById("counterPlaces").innerHTML =""
+	var onlyPlacesWithEvents = 0;
+	var onlyRatedPlaces = 0;
+	if (document.getElementById("checkPlacesWithEvents").checked) onlyPlacesWithEvents = 1;
+	if (document.getElementById("checkOnlyRatedPlaces").checked) onlyRatedPlaces = 1;
 	
     $.ajax({
         type: 'post',
-        url: DJANGO_API_ADDR+'getAllEvents/',
+        url: DJANGO_API_ADDR+'getAllPlaces/',
         data:{
-        	//'days':$("input[name=date]:checked").val(),
+        	'username': sessionStorage.getItem('userPugliaEvent'),
         	'location':document.getElementsByName('comune')[0].value,
-        	'range':document.getElementById("slider-value").innerHTML,
-        	'weather': document.getElementById("sliderMeteo-value").innerHTML,
-        	'no-weather-data': noWeatherData,
-        	'start-date': start_date,
-        	'end-date': end_date
+        	'luogo':document.getElementsByName('nomeLuogo')[0].value,
+        	//'range':document.getElementById("slider-value").innerHTML,
+        	'range':0,
+        	'only-with-events': onlyPlacesWithEvents,
+        	'only-rated-places': onlyRatedPlaces
         },
         success: function (response) {
-        	allEvents = response;
+        	allPlaces = response;
         	document.getElementById("waiting").innerHTML = "";
-        	makePages(allEvents.length, 0);
-        	document.getElementById("listPlaceholder").innerHTML= "<h1>Eventi </h1>";
-        	document.getElementById("counterEvents").innerHTML= " ("+ allEvents.length + " trovati)";
-        	loadPageEvents(1);
+        	makePages(allPlaces.length, 1);
+        	document.getElementById("listPlaceholder").innerHTML= "<h1>Punti di interesse </h1>";
+        	document.getElementById("counterPlaces").innerHTML= " ("+ allPlaces.length + " trovati)";
+        	loadPagePlaces(1);
         	
         },
         error: function(e) {
@@ -438,15 +516,31 @@ function loadAllEvents() {
     });
 }
 
-function loadPageEvents(page){
-	var pageOffset =  ((page*10)-10);
-	$("#eventiContainer").html("");
-	for (var i = pageOffset; i < Math.min((page*10), allEvents.length); i++){
-        printEventi(allEvents[i],i, i, "eventiContainer");
+function loadPagePlaces(page){
+	var placeColumns = 2;
+	var elements = 20;
+	var pageOffset =  ((page*elements)-elements);
+	$("#placesContainer").html("");
+	var row = 0;
+	for (var i = pageOffset; i < Math.min((page*elements), allPlaces.length); i++){
+		if (i % placeColumns == 0){
+			document.getElementById('placesContainer').innerHTML =   document.getElementById('placesContainer').innerHTML + "<div class = 'row' id='placerow" + parseInt(i/placeColumns) + "'></div>";
+		}
+        printPlaces(allPlaces[i],i, i, "placerow"+parseInt(i/placeColumns));
       }
 }
 
-
+$('input[id=checkOnlyRatedPlaces]').change(function(){
+    if($(this).is(':checked')) {
+    	$('input[id=comune]').prop('disabled', true);
+    	$('input[id=checkPlacesWithEvents]').prop('disabled', true);
+    	$('input[id=checkPlacesWithEvents]').prop('checked', false);
+    } else {
+    	console.log("is unchecked");
+    	$('input[id=comune]').prop('disabled', false);
+    	$('input[id=checkPlacesWithEvents]').prop('disabled', false);
+    }
+});
 
 </script>
 
